@@ -1,0 +1,16 @@
+a = 'A'
+b = 'B'
+c = 'C'
+def hano(a,b,c,n):
+	if n ==1:
+		print('{}-->{}'.format(a,c))
+		return None
+	if n == 2:
+		print('{}-->{}'.format(a,c))
+		print('{}-->{}'.format(a,b))
+		print('{}-->{}'.format(b,c))
+		return None
+	hano(a,c,b,n-1)
+	print('{}-->{}'.format(a,c))
+	hano(b,a,c,n-1)
+hano(a,b,c,5)
