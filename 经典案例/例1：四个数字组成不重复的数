@@ -1,0 +1,36 @@
+C代码：
+#include <stdio.h>
+int main()
+{     //以下为三重循环
+int count=1;
+int i,j,k; 
+	for(i=1;i<5;i++)
+	{
+		for(j=1;j<5;j++)
+		{
+			for(k=1;k<5;k++)
+			{
+				if((i!=k)&&(i!=j)&&(j!=k))   //确保i，j，k三位互不相同
+				{
+					printf("No%d: ",count);
+					printf("%d%d%d",i,j,k);
+					count++;
+					printf("\n");
+				 } 
+			}
+		}
+	}
+	return 0;
+}
+
+C的嵌套思想（思路）用Python实现时也要是嵌套思想（思路）
+
+Python代码：
+count = 1
+for i in range(1,5):
+    for j in range(1,5):
+        for k in range(1, 5):
+            if ((i!=j) and (i!=k) and (j!=k)):
+                print('No: ',count)
+                print(i,j,k)
+                count += 1
