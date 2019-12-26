@@ -54,7 +54,7 @@ my_tesla.battery.describe_battery()
 my_tesla.battery.get_range()
 
 
-####导入不对
+####导入不对---->这两个是不同的文件，在一个里面当然导入不对
 
 from car import ElectricCar
 
