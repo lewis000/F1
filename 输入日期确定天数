@@ -1,0 +1,15 @@
+#输入年月日可以确定是第几天
+#功能基本可以实现，但是中间有错误，2月1日就是个错误
+year = int(input("请输入年份："))
+month = int(input('请输入月份：'))
+day = int(input('请输入日期：'))
+sumday = 0
+monthday = [31,28,31,30,31,30,31,31,30,31,30,31]
+if ((year % 400 ==0) and (year % 100 == 0) and (year % 4 == 0)):
+	monthday[1] = 29
+for i in range(0,13):
+	if i < month - 1:
+		i += 1
+		sumday += monthday[i]
+sumday += day
+print(sumday)
