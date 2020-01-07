@@ -1,0 +1,47 @@
+//例4：对三个数进行排序 
+
+C代码：三个数排序
+/* 
+#include<stdio.h>
+int main()
+{
+	int x, y, z, t;
+	printf("请输入三个不同的数：\n");
+	scanf("%d%d%d",&x,&y,&z);
+	if(x > y)
+	{
+		t = x;
+		x = y;
+		y = t;
+	}
+	if(x > z)
+	{
+		t = x;
+		x = z;
+		z = t;
+	}
+	if(y > z)
+	{
+		t = y;
+		y = z;
+		z = t;
+	}
+	printf("从小到大顺序：%d %d %d",x, y, z);
+	return 0;
+}
+
+
+python代码：
+#冒泡排序 （怎么排序输入的数字？）
+'''
+#list1 = input("请输入数字：")  这两句目的是想排序输入的数，但是功能没实现
+#list1 = list(list1)
+list1 = [50,20,5,18,22,3]
+print('排序前',list1)
+n = len(list1)
+for i in range(n-1):
+	for j in range(n-1-i):
+		if list1[j] > list1[j+1]:
+			list1[j],list1[j+1] = list1[j+1],list1[j]
+	#print('第%d轮后：'%(i+1),list1)
+print('排序后',list1)
