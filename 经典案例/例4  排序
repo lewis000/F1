@@ -45,3 +45,15 @@ for i in range(n-1):
 			list1[j],list1[j+1] = list1[j+1],list1[j]
 	#print('第%d轮后：'%(i+1),list1)
 print('排序后',list1)
+
+
+
+#从大到小排序
+a = [1211,265,56,54,165,1,16]
+b = sorted(a,reverse = True)
+print(b)
+
+#从小到大排序
+a = [1211,265,56,54,165,1,16]
+b = sorted(a)
+print(b)
