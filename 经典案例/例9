@@ -1,0 +1,50 @@
+C代码：
+#include<stdio.h>
+int main()
+{
+	int i,j;
+	for(i=0;i<8;i++)
+	{
+		for(j=0;j<8;j++)
+			if((i+j) % 2 == 0)
+				printf("%c%c",219,219);
+			else
+				printf(" ");
+		printf("\n");
+	}
+	return 0;
+ } 
+
+python代码：
+#i控制行，j控制列，i+j的和的变化来控制输出黑方格，还是白方格
+
+for i in range(0,8):
+	for j in range(0,8):
+		if (j+i) % 2 != 0:
+			print(chr(655),end = ' ')
+		else:
+			print(' ',end = ' ')
+	print()
+
+
+import sys
+for i in range(8):
+	for j in range(8):
+		if (i+j) % 2 == 0:
+			sys.stdout.write(chr(732)+'')
+		else:
+			sys.stdout.write(chr(1)+' ')
+	print()
+
+#自己写的
+i = 0  #可以没有
+for i in range(0,8):
+	i += 1  #可省略
+	j = 0  #可省略
+	for j in range(0,8):
+		#j += 1   #可省略
+		if ((i+j) % 2 ==0):
+			print(chr(219),end = ' ')
+		else:
+			print(' ',end = ' ')
+	print('\n')
