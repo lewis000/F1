@@ -1,0 +1,50 @@
+'''
+需要的包：jieba、wordcloud、scipy、matplotlib（可以没有）
+还有imread模块-->安装方法pip直接安装，不成功-->先下载（地址：https://pypi.org/project/scipy/1.1.0/#files）
+然后在搜索栏输入cmd，右键，以管理员身份运行。
+输入pip install C:\Users\hp\AppData\Local\Programs\Python\Python37\Scripts\scipy-1.1.0-cp37-cp37m-win_amd64.whl
+（后面很长的那一串是自己的文件完整路径加上名字，引号里不要多空格啊什么的，否则会出错）
+
+
+注：文件地址问题！！！一定要相同！！！地址不相同时一定要有绝对地址！！！！
+'''
+
+import jieba
+from wordcloud import WordCloud,ImageColorGenerator
+import matplotlib.pyplot as plt
+from scipy.misc import imread
+
+text = open(r'.\ci.txt','r').read()
+#print(text)
+
+#分开歌词
+cut_text = jieba.cut(text)
+result = ' '.join(cut_text)
+
+#读取图片
+image = imread('5.jpg')
+
+#生成词云图
+wc = WordCloud(
+	font_path=r'.\simhei.ttf',
+	background_color='black',
+	#width=500,
+	#height=350,
+	max_font_size=50,
+	min_font_size=10,
+	mask=image
+)
+wc.generate(result)
+#跟图片颜色一致
+image_color = ImageColorGenerator(image)
+wc.recolor(color_func=image_color)
+
+#wc.to_file(r'.\wordcloud.png')
+print(wc.to_file('13.jpg'))
+
+'''
+#显示图片
+plt.figure('hebe')
+plt.imshow(wc)
+plt.show()
+'''
