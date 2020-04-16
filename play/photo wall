@@ -1,0 +1,23 @@
+from PIL import Image
+
+#设置底图
+image = Image.new('RGBA',(7680,14940))
+
+width = 1920
+hight = 2490
+#定义第一张照片的位置
+x = 0
+y = 0
+
+for i in range(1,24):
+	#打开图片，用三方库
+	img = Image.open(str(i)+'.jpg')
+	#设置图片尺寸
+	img.resize((width,hight),Image.ANTIALIAS)
+	#粘贴到底图上
+	image.paste(img,(x*width,y*hight))
+	x += 1
+	if x == 4:
+		x = 0
+		y += 1
+image.save('41.png')
