@@ -1,0 +1,22 @@
+import jieba
+from wordcloud import WordCloud,ImageColorGenerator
+from scipy.misc import imread
+#解词
+text = open('ci.txt','r').read()
+cut_text = jieba.cut(text)
+result = ' '.join(cut_text)
+
+image = imread('5.jpg')
+#制作词云
+wc = WordCloud(
+	font_path='simhei.ttf',
+	background_color='black',
+	max_font_size=75,
+	mask=image,
+)
+wc.generate(result)
+#原图颜色
+img = ImageColorGenerator(image)
+wc.recolor(color_func=img)
+
+print(wc.to_file('wc2.png'))
