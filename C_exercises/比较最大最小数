@@ -1,0 +1,75 @@
+ //输出3个数中的最大最小值
+ #include<stdio.h>
+ int main()
+ {
+ 	int a,b,c,min,max;
+ 	printf("please input three numbers:");
+ 	scanf("%d%d%d",&a,&b,&c);
+ 	max = a > b?a:b;
+ 	//max = b > c?b:c;
+ 	max = max > c?max:c;
+ 	min = a < b?a:b;
+ 	//min = b < c?b:c;
+ 	min = min < c?min:c;
+ 	//min = a < c?a:c;     //把max/min与另一个数比较，可以较快得出结果 
+ 	printf("max = %d\nmin = %d",max,min);
+ 	return 0;
+  } 
+  
+  //方法二
+   #include<stdio.h>
+ int main()
+ {
+ 	int a,b,c,t;
+ 	printf("please input three numbers:");
+ 	scanf("%d%d%d",&a,&b,&c);
+ 	if(a<b)
+ 	{
+ 		t = a;
+ 		a = b;
+ 		b = t;
+	}
+	if(a<c)
+	{
+		t = a;
+		a = c;
+		c = t;
+	}
+	if(b<c)
+	{
+		t = b;
+		b = c;
+		c = t;
+	}
+	printf("max = %d\nmin = %d",a,c);
+ 	return 0;
+  } 
+  
+ //方法三：冒泡法
+ #include<stdio.h>
+ int main()
+ {
+ 	int i,j,t;
+ 	int a[3];   //数组  
+ 	printf("please input three numbers:");    //数字可改,所有的数字都要相应的改 
+ 	for(i = 0;i < 3;i++)      //以下两句循环输入 
+ 		scanf("%d",&a[i]);
+ 	for(j = 0;j<2;j++)      //冒泡法的核心 
+ 	{
+ 		for(i = 0;i < 2 - j;i++)    //i是数组下标，j是大循环 
+ 		{
+ 			if(a[i] > a[i+1])
+ 			{
+ 				t = a[i];
+ 				a[i] = a[i+1];
+ 				a[i+1] = t;
+			 }
+		 }
+	 }
+	printf("从小到大顺序:\n");
+	for(i = 0;i < 3;i++)     //以下两句循环输出 
+		printf("%d\t",a[i]);
+  printf("\n");
+	printf("max = %d",a[2]);   //冒泡法最大值是数组最后一个数据,最小值是第一个数据
+ 	return 0;
+ }
