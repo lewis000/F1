@@ -1,0 +1,68 @@
+//p135 判断素数
+#if(0)
+#include<stdio.h>
+int main()
+{
+	int i, n;
+	printf("please input a number:");
+	scanf_s("%d", &n);   //scanf不行（IDE：VS2019）
+	for (i = 2; i <= n - 1; i++)
+	{
+		if (n % i == 0)  //n%i与i%n结果不一致     n被i整除的表达式为：n%i
+			break;
+		//else
+			//i = i + 1;   //内容与i++作用重复
+	}
+	if (i < n)
+		printf("%d不是素数\n",n);
+	else
+		printf("%d是素数\n",n);
+
+	return 0;
+}
+#endif
+
+//p137  求100-200之间全部素数   功能实现方式不完全正确
+#if(0)
+#include<stdio.h>
+int main()
+{
+	int i, n;
+	for (n = 101; n <= 200; n++)
+	{
+		for (i = 2; i <= n - 1; i++)
+			if (n % i == 0)
+				break;
+		if (i < n)      //只需要对下面的代码进行改动，即可实现功能（改为输出数）
+			printf("%d is not prime number.\n", n);
+		else
+			printf("%d is prime number.\n", n);
+	}
+	return 0;
+}
+#endif
+
+//输出100~200内全部素数
+#if(0)
+#include<stdio.h>
+int main()
+{
+	int n, i,m = 0;
+	for (n = 101; n <= 200; n = n + 2)
+	{
+		for (i = 2; i <= n - 1; i++)
+		{
+			if (n % i == 0)
+				break;
+		}
+		if (i >= n)
+			printf("%d\t", n);
+		m += 1;     //以下三行用来控制输出格式，放在100~200的for循环内
+		if (m % 10 == 0)
+			printf("\n");
+	}
+	//if (m % 10 == 0)
+		//printf("\n");
+	return 0;
+}
+#endif
