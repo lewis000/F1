@@ -1,0 +1,60 @@
+//方法一
+#if(0)
+#include<stdio.h>
+int main()
+{
+	int f1 = 1,f2 = 1;
+	int i,f3;
+	printf("%d\t%d\t",f1,f2);
+	for(i = 1;i <= 20;i++)     //i从1开始
+	{
+		f3 = f1 + f2;
+		printf("%d\t",f3);   //该句下移，输出结果不对 
+		f1 = f2;
+		f2 = f3;
+		//printf("%d",f3);
+	}
+	//printf("%d",f3);
+	return 0;
+}
+#endif
+
+//方法二
+#include<stdio.h>
+int main()
+{
+	int f1 = 1,f2 = 1;
+	int i;
+	//printf("%d%d",f1,f2);
+	for(i = 1;i <= 20;i++)
+	{
+		printf("%12d\t%12d\t",f1,f2);
+		if(i % 2 == 0)     //控制输出格式
+			printf("\n");
+		f1 = f1 + f2;
+		f2 = f1 + f2;
+	}
+	return 0;
+}
+
+//方法三   数组方法
+#include<stdio.h>
+int main()
+{
+	int i;
+	int f[20] = {1,1};
+	for(i = 2;i < 20;i++)
+		f[i] = f[i-2] + f[i-1];
+	//for(i = 0;i < 20;i++)        //注意两个for循环的i初始值不同 
+	//{
+	//	printf("%d\t",f[i]);      //到此菲波那切数列已完成 
+	//}
+	for(i = 0;i < 20;i++)
+	{
+		if(i % 5 == 0)     //控制输出格式 
+			printf("\n");
+	printf("%d\t",f[i]);
+	}
+	printf("\n");
+	return 0;
+}
