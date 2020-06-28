@@ -1,0 +1,91 @@
+#include<stdio.h>
+int main()
+{
+	int i,j;
+	int n;
+	for(i = 1; i <= 4;i++)
+	{
+		for(j = 1; j <= 5;j++,n++)   //n++有与没有输出格式不一样？ 
+		{
+			n = n + 1;        //这句有与没有输出格式不一样？    10和14，同一句话，位置不同，输出格式不同
+			if(n % 5 == 0) 
+			printf("\n");    //该行为什么会对结果产生影响？ 
+			printf("%d\t",i * j);
+			n = n + 1;       //与n++输出格式一致 
+		}
+	}
+	//printf("\n");   //此行有与没有无影响 
+	return 0;
+}
+
+
+//二维数组行列互换 （2行3列）数字可改
+#include<stdio.h>
+int main()
+{
+	int a[2][3];     //int a[2][3] = {{1,2,3},{4,5,6}}; 
+	int b[3][2],i,j;
+	printf("please input six numbers:");
+	for(i = 0;i < 2;i++)    //循环输入 
+	{
+		for(j = 0;j < 3;j++)
+		{
+			scanf("%d",&a[i][j]);
+		}
+	}
+	//scanf("%d",&a[i][j]);
+	printf("array a:\n");
+	for(i = 0;i < 2;i++)
+	{
+		for(j = 0;j < 3;j++)
+		{
+			b[j][i] = a[i][j];      //a与b互换只能在a的循环里换，在b循环里换，i、j超标
+			printf("%d\t",a[i][j]);
+		}
+		printf("\n");     //输出矩阵格式 
+	}
+	printf("array b:\n");
+	for(i = 0;i < 3;i++)
+	{
+		for(j = 0;j < 2;j++)
+		{
+			printf("%d\t",b[i][j]);
+		}
+		printf("\n");
+	}
+	return 0;
+ } 
+
+
+//求数组（矩阵）里最大值，并输出行数和列数（打擂台法） 
+#include<stdio.h>
+int main()
+{
+	int a[4][5];    //4行5列，数字可改 
+	int i,j,max;
+	int row = 0,colum = 0;
+	printf("please input 20 numbers:\n");
+	for(i = 0;i < 4;i++)
+	{
+		for(j = 0;j < 5;j++)
+		{
+			scanf("%d",&a[i][j]);
+		}
+	}
+	max = a[0][0];        //定义的，相当于站在擂台上的那个人
+	for(i = 0;i < 4;i++)     //打擂台法核心(类似冒泡法) 冒泡法： for(j = 0;j < 5;j++)
+	{
+		for(j = 0;j < 5;j++)                                   //for(i = 0;i < 5-j;i++)
+		{
+			if(a[i][j] > max)                                  //if(a[i] > a[i+1])
+			{
+				max = a[i][j];                                 //t = a[i]
+				row = i;                                       //a[i] = a[i+1]
+				colum = j;                                     //a[i+1] = t
+			}
+		}
+	}
+	printf("max = %d\trow = %d\tcolum = %d\t",max,row,colum);
+	return 0;
+ } 
+
