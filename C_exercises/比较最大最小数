@@ -54,7 +54,7 @@
  	printf("please input three numbers:");    //数字可改,所有的数字都要相应的改 
  	for(i = 0;i < 3;i++)      //以下两句循环输入 
  		scanf("%d",&a[i]);
- 	for(j = 0;j<2;j++)      //冒泡法的核心 
+ 	for(j = 0;j<2;j++)      //冒泡法的核心              j的范围一定要比数组值少一      
  	{
  		for(i = 0;i < 2 - j;i++)    //i是数组下标，j是大循环 
  		{
