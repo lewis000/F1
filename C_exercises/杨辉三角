@@ -16,3 +16,33 @@ int main()
 	//printf("\n");
 	return 0;
 }
+
+
+//一个数组按一定顺序排列，此时插入一个数，该数按原规律插入数组 
+#include<stdio.h>
+#define N 5
+int main()
+{
+	//static int a[N]; 
+	int a[N];                  //不用static输出结果没有变化？？？ 
+	int i,b,t;
+	printf("请输入一个数组(N个数字从小到大)：");       //N个数字从小到大
+	for(i = 0;i < N;i++)
+		scanf("%d",&a[i]);
+	printf("please input a number:");
+	scanf("%d",&b);
+	for(i = 0;i < N;i++)
+	{
+		if(b <= a[i])          // if(b >= a[i]) 
+		{
+			t = a[i];
+			a[i] = b;
+			b = t;
+			
+		}
+		printf("%d\t",a[i]);
+		//printf("%d",b);
+	}
+	printf("%d",b);
+	return 0;
+}
