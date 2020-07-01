@@ -1,3 +1,4 @@
+#python
 a = 'A'
 b = 'B'
 c = 'C'
@@ -6,11 +7,41 @@ def hano(a,b,c,n):
 		print('{}-->{}'.format(a,c))   #格式化  print(a,'-->',c)
 		return None
 	if n == 2:
-		print('{}-->{}'.format(a,c))
 		print('{}-->{}'.format(a,b))
+		print('{}-->{}'.format(a,c))
 		print('{}-->{}'.format(b,c))
 		return None
 	hano(a,c,b,n-1)   #把n-1个盘子，从A盘借助C盘挪到B盘
 	print('{}-->{}'.format(a,c))
 	hano(b,a,c,n-1)
 hano(a,b,c,5)
+
+//C
+#include<stdio.h>
+int main()
+{
+	void hanoi(int n, char one, char two, char three);
+	int m;
+	printf("input the number of diskes:");
+	scanf_s("%d", &m);
+	printf("the step to move %d diskes:\n", m);
+	hanoi(m, 'A', 'B', 'C');
+}
+
+void hanoi(int n, char one, char two, char three)
+{
+	void move(char x, char y);
+	if (n == 1)
+		move(one, three);
+	else
+	{
+		hanoi(n - 1, one, three, two);   //把n-1个盘子移动到B座
+		move(one, three);                //将最后一个盘子移动到C座
+		hanoi(n - 1, two, one, three);   //将n-1个盘子移动到C座
+	}
+}
+
+void move(char x, char y)
+{
+	printf("%c-->%c\n", x, y);
+}
