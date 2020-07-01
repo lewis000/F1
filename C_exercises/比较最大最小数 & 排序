@@ -1,3 +1,5 @@
+//求最大最小值 
+ 
  //输出3个数中的最大最小值
  #include<stdio.h>
  int main()
@@ -44,8 +46,48 @@
 	printf("max = %d\nmin = %d",a,c);
  	return 0;
   } 
-  
- //方法三：冒泡法
+
+
+//方法三：打擂台法       求最大值和该数的位置（一个数组：10个数字）     
+#if(0)
+#include<stdio.h>
+int main()
+{         //输入10个数，并调用max函数；
+	int max(int x,int y);
+	int a[10],i,n,m;
+	printf("please input 10 numbers:");
+	for(i = 0;i < 10;i++)
+	{
+		scanf("%d",&a[i]);
+	} 
+	m = a[0];
+	for(i = 0;i < 10;i++)      //i = 0 || 1
+	{
+		if(m < max(m,a[i]))
+		{
+			m = max(m,a[i]);
+			n = i;
+		}
+	}
+	printf("the largest is %d\nit is the %dth number",m,n + 1);
+	return 0;
+}
+
+int max(int x,int y)
+{
+	int m;
+	m = x > y?x:y;
+	return(m);
+}
+
+
+
+
+**********************************************************************************************************************
+ //排序
+
+
+ //方法一：冒泡法
  #include<stdio.h>
  int main()
  {
@@ -76,7 +118,7 @@
 
 
 
-//方法四：选择法排序
+//方法二：选择法排序
 /*选择法排序总的思路是：
 1、找出一个最小数，交换到最前面。
 2、在剩下的数里面，再找一个最小的，交换到剩下数的最前面
