@@ -91,6 +91,7 @@ int main()
  } 
 //求数组（矩阵）里最大值，并输出行数和列数（打擂台法）      函数写法（函数中，return只能返回一个值）
 #include<stdio.h>
+//int Row = 0,Colum = 0;      //定义全局变量
 #define I 3
 #define J 4
 int main()
@@ -111,6 +112,7 @@ int main()
 	}
 	printf("the max value is:%d\n", max_value(a));
 	printf("row = %d\ncolum = %d\n", max_row(a),max_colum(a));
+	//printf("max = %d\nrow = %d\ncolum = %d",max_value(a),Row,Colum);       //全局变量写法输出语句
 	return 0;
 }
 
@@ -122,9 +124,11 @@ int max_value(int a[I][J])
 	{
 		for (j = 0; j < J; j++)
 		{
-			if (max < a[i][j])
+			if (max < a[i][j])          //当max > a[i][j]时，则是求最小值
 			{
 				max = a[i][j];
+				//Row = i;          //全局变量写法，定义全局变量后，只需这两句就可以搞定row && colum，不需要max_row && max_colum函数
+				//Colum = j;
 			}
 		}
 	}
