@@ -21,6 +21,33 @@ int main()
 	return 0;
 }
 #endif
+//判断素数   函数写法
+#if(0)
+#include<stdio.h>
+int main()
+{
+	void prime(int n);
+	int n;
+	printf("please input a number:");
+	scanf_s("%d", &n);
+	prime(n);
+	return 0;
+}
+
+void prime(int n)
+{
+	int i;
+	for (i = 2; i <= n - 1; i++)   //判断n能否被1和它本身之外的数整除，如果能就不是素数
+	{
+		if (n % i == 0)
+			break;
+	}
+	if (i < n)
+		printf("%d is not prime\n", n);
+	else
+		printf("%d is prime\n", n);
+}
+#endif
 
 //p137  求100-200之间全部素数   功能实现方式不完全正确
 #if(0)
