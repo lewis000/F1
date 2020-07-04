@@ -1,0 +1,131 @@
+//方法一     求最大公约数、最小公倍数
+#if(0)
+#include<stdio.h>
+int main()
+{
+	int m, n, x, y, z;
+	printf("please input 2 number:");
+	scanf_s("%d%d", &x, &y);
+	m = x, n = y;
+	while (y != 0)        //小心别写成死循环
+	{
+		z = x % y;
+		x = y;
+		y = z;            //
+	}
+	printf("最大公约数：%d\n", x);
+	printf("最小公倍数：%d\n", m * n / x);
+	return 0;
+}
+#endif
+
+//方法二    
+#if(0)
+#include<stdio.h>
+int main()
+{
+	int m, n, x, y;
+	printf("please input 2 number:");
+	scanf_s("%d%d", &x, &y);
+	m = x, n = y;
+	while (x != y)
+	{
+		if (x > y)
+			x = x - y;
+		else
+			y = y - x;
+	}
+	printf("最大公约数：%d\n", x);
+	printf("最小公倍数：%d\n", m * n / x);
+	return 0;
+}
+#endif
+
+//方法一的函数写法    （主函数：输入两个数，调用函数，输出结果）
+#include<stdio.h>
+int main()
+{
+	int zdgys(int m, int n);
+	int zxgbs(int m, int n);
+	int m, n, z1, z2;
+	printf("please input 2 numbers:");
+	scanf_s("%d%d", &m, &n);
+	z1 = zdgys(m, n);
+	z2 = zxgbs(m, n);
+	printf("zdgys = %d\n", z1);
+	printf("zxgbs = %d\n", z2);
+	return 0;
+}
+
+int zdgys(int m, int n)    //最大公约数
+{
+	int x, y, z, zdgys;
+	x = m, y = n;
+	while (y != 0)
+	{
+		z = x % y;
+		x = y;
+		y = z;
+	}
+	zdgys = x;
+	return(zdgys);
+}
+
+int zxgbs(int m, int n)    //最小公倍数
+{
+	int x, y, z, zxgbs;
+	x = m, y = n;
+	while (y != 0)
+	{
+		z = x % y;
+		x = y;
+		y = z;
+	}
+	zxgbs = m * n / x;
+	return(zxgbs);
+}
+
+//方法二的函数写法            （主函数：输入两个数，调用函数，输出结果）
+int main()
+{
+	int zdgys(int m, int n);
+	int zxgbs(int m, int n);
+	int m, n, z1, z2;
+	printf("please input 2 numbers:");
+	scanf_s("%d%d", &m, &n);
+	z1 = zdgys(m, n);
+	z2 = zxgbs(m, n);
+	printf("zdgys = %d\n", z1);
+	printf("zxgbs = %d\n", z2);
+	return 0;
+}
+
+int zdgys(int m, int n)    //最大公约数
+{
+	int x, y, zdgys;
+	x = m, y = n;
+	while (x != y)
+	{
+		if (x > y)
+			x = x - y;
+		else
+			y = y - x;
+	}
+	zdgys = x;
+	return(zdgys);
+}
+
+int zxgbs(int m, int n)    //最小公倍数
+{
+	int x, y, zxgbs;
+	x = m, y = n;
+	while (x != y)
+	{
+		if (x > y)
+			x = x - y;
+		else
+			y = y - x;
+	}
+	zxgbs = m * n / x;
+	return(zxgbs);
+}
