@@ -18,7 +18,7 @@ int main()
 	//printf("\n");   //此行有与没有无影响 
 	return 0;
 }
-
+*************************************************************************************************
 
 //二维数组行列互换 （2行3列）数字可改
 #include<stdio.h>
@@ -96,8 +96,7 @@ void fac(int a[3][3], int b[3][3])
 	}
 }
 
-
-
+*************************************************************************************
 
 //求数组（矩阵）里最大值，并输出行数和列数（打擂台法） 
 #include<stdio.h>
@@ -214,4 +213,125 @@ int max_colum(int a[I][J])
 		}
 	}
 	return(colum);
+}
+
+*************************************************************************************
+//倒叙输出数组（一般函数写法） 
+#if(0)
+#include<stdio.h>
+int main()
+{
+	void inv(int a[],int n);
+	int i,x[10] = {0,1,2,3,4,5,6,7,8,9};
+	printf("the numbers:");
+	for(i = 0;i < 10;i++)
+	{
+		printf("%d\t",x[i]);
+	}
+	inv(x,10);
+	printf("\n");
+	printf("the inv numbers:");
+	for(i = 0;i < 10;i++)
+	{
+		printf("%d\t",x[i]);
+	}
+	return 0;
+ } 
+
+void inv(int a[],int n)
+{
+	int i,j,t,m;
+	m = (n - 1) / 2;    //中位数 
+	for(i = 0;i < m;i++)
+	{
+		j = n - 1 - i;    //最后一位数 
+		t = a[i];
+		a[i] = a[j];
+		a[j] = t;
+	}
+}
+#endif
+
+//指针写法 
+//指针变量做形参           
+#if(0)
+#include<stdio.h>
+int main()           //指针变量做形参，主函数跟一般写法一样，倒序函数用指针 
+{
+	void inv(int *a,int n);
+	int i,x[10] = {0,1,2,3,4,5,6,7,8,9};
+	printf("the numbers:");
+	for(i = 0;i < 10;i++)
+	{
+		printf("%d\t",x[i]);
+	}
+	inv(x,10);
+	printf("\n");
+	printf("the inv numbers:");
+	for(i = 0;i < 10;i++)
+	{
+		printf("%d\t",x[i]);
+	}
+	return 0;
+}
+
+void inv(int *a,int n)
+{
+	int *i,*j,*p,t,m = (n-1)/2;
+	i = a;         // 第一个元素的地址 
+	j = a + n - 1;  //最后一个元素的地址 
+	p = a + m;      //中位数的地址 
+	for(;i < p;i++,j--)    //i < 中位数，i往上加，j往下减 
+	{
+		t = *i;    //以下i、j的值互换 
+		*i = *j;
+		*j = t;
+	}
+}
+#endif
+
+//指针写法 
+//指针变量做实参
+#include<stdio.h>
+int main()                  //指针变量做形参，主函数用指针，倒序函数也用指针
+{
+	void inv(int *x,int n);
+	int i,*p;
+	int a[10];
+	//int a[10] = {0,1,2,3,4,5,6,7,8,9};         //不能写成 int a[10];a[10] = {0,1,2,3,4,5,6,7,8,9}; 
+	printf("please input 10 numbers:");
+	for(p = a;p < a+10;p++)
+	{
+		scanf("%d",p);    //输入数组a的元素 
+	}
+	printf("\n");
+	p = a;                      //不能少，少了输出结果不对         指针重新指向a[0] 
+	printf("the numbers:");
+	for(p = a;p < a+10;p++)
+	{
+		printf("%d\t",*p);
+	}
+	p = a;                    //指针重新指向a[0] 
+	inv(p,10);                //调用inv函数，实参p是指针变量             写inv（a，10）也对 
+	printf("\n");
+	printf("the inv numbers:");
+	for(p = a;p < a+10;p++)
+	{
+		printf("%d\t",*p);
+	}
+	return 0;
+}
+
+void inv(int *x,int n)
+{
+	int *i,*j,*p,t,m = (n-1)/2;
+	i = x;
+	j = x + n - 1;
+	p = x + m;
+	for(;i < p;i++,j--)
+	{
+		t = *i;
+		*i = *j;
+		*j = t;
+	}
 }
