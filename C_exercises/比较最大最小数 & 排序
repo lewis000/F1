@@ -187,3 +187,43 @@ void sort(int a[], int n)
 		a[i] = t;
 	}
 }
+//由大到小排序--选择算法--指针变量做实参
+#if(0)
+#include<stdio.h>
+int main()
+{
+	void sort(int x[], int n);
+	//int i, a[10], * p;
+	int a[10], * p;
+	p = a;                          //指针变量指向a[0]
+	printf("please input 10 numbers:");
+	for (p = a; p < a + 10; p++)       //for (i = 0; i < 10; i++)   两种写法都可以输入10个数
+		scanf_s("%d", p);                 //scanf_s("%d", p++);
+	for (i = 0; i < 10; i++)
+		scanf_s("%d", p++);
+	p = a;                          //指针变量重新指向a[0]
+	sort(p, 10);
+	printf("the sorted numbers:");
+	for (p = a; p < a + 10; p++)
+		printf("%d\t", *p);
+	return 0;
+}
+void sort(int x[], int n)
+{
+	int i, j, k, t;
+	for (i = 0; i < 10; i++)
+	{
+		k = i;
+		for (j = i + 1; j < 10; j++)
+		{
+			if (x[j] < x[k])
+			{
+				k = j;
+			}
+		}
+		t = x[i];
+		x[i] = x[k];
+		x[k] = t;
+	}
+}
+#endif
