@@ -1,0 +1,54 @@
+#include<stdio.h>
+#include<malloc.h>
+int main()
+{
+	struct Student
+	{
+		int number;
+		int score;
+		char name[20];
+	};
+	int len,i,j;
+	struct Student t;
+	struct Student *parr;
+	parr = (struct Student *)malloc(len * sizeof(struct Student));             //动态分配内存    
+	
+	printf("请输入学生个数：len = ");
+	scanf("%d",&len);
+	//输入学生信息 
+	for(i = 0;i < len;i++)
+	{
+		printf("请输入学生姓名：name = ");
+		scanf("%s",parr[i].name);
+		printf("请输入学生学号：number = ");
+		scanf("%d",&parr[i].number);
+		printf("请输入学生成绩：score = ");
+		scanf("%d",&parr[i].score);
+	}
+	//成绩排序（冒泡法） 
+	for(i = 0;i < len;i++)
+	{
+		for(j = 0;j < len-i-1;j++)
+		{
+			if(parr[j].score > parr[j+1].score)
+			{
+				t = parr[j];
+				parr[j] = parr[j+1];
+				parr[j+1] = t;
+			}
+		}
+	}
+	//输出学生信息 
+	printf("\n学生信息：\n");
+	for(i = 0;i < len;i++)
+	{
+		//printf("请输入学生姓名：name = ");
+		printf("name = %s\t",parr[i].name);
+		//printf("请输入学生学号：number = ");
+		printf("number = %d\t",parr[i].number);
+		//printf("请输入学生成绩：score = ");
+		printf("score = %d\t",parr[i].score);
+		printf("\n");
+	}
+	return 0;
+ } 
