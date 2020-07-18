@@ -1,4 +1,5 @@
 //方法一
+C:
 #if(0)
 #include<stdio.h>
 int main()
@@ -19,7 +20,32 @@ int main()
 }
 #endif
 
+C++:
+#include<iostream>
+#include<iomanip>
+using namespace std;
+int main()
+{
+	int i;
+	double f1 = 1, f2 = 1, f3;
+	//cout << setw(12) << f1 << setw(12) << f2;
+	cout << setw(12) << f1 << endl;
+	cout << setw(12) << f2 << endl;   //f1、f2的值先输出
+	for (i = 1; i < 20; i++)
+	{
+		f3 = f1 + f2;
+		//cout << setw(12) << f1 << setw(12) << f2 << setw(12) << f3 << endl;
+		cout << setw(12) << f3 << endl;    //输出f3
+		f1 = f2;
+		f2 = f3;
+	}
+	return 0;
+}
+
+*******************************************************************************************************
+
 //方法二
+C:
 #include<stdio.h>
 int main()
 {
@@ -37,7 +63,37 @@ int main()
 	return 0;
 }
 
+C++:
+#if(0)
+#include<iostream>
+#include<iomanip>
+using namespace std;
+int main()
+{
+	long f1, f2;
+	int i;
+	f1 = f2 = 1;
+	//cout << f1 << f2;
+	for (i = 1; i < 20; i++)
+	{
+		cout << setw(12) <<f1 << setw(12) << f2;   //控制输出格式    输出语句不能下移
+		//cout << f1 << "\t" << f2 << "\t";
+		if (i % 2 == 0)
+			cout << endl;
+		f1 = f1 + f2;
+		f2 = f1 + f2;
+		//if (i % 4 == 0)
+			//cout << endl;
+		
+	}
+	return 0;
+}
+#endif
+
+**********************************************************************************************************
+
 //方法三   数组方法
+C:
 #include<stdio.h>
 int main()
 {
