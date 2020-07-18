@@ -1,4 +1,5 @@
 //p135 判断素数
+C:
 #if(0)
 #include<stdio.h>
 int main()
@@ -21,6 +22,29 @@ int main()
 	return 0;
 }
 #endif
+
+C++:
+#include<iostream>
+using namespace std;
+int main()
+{
+	int i, n;
+	cout << "please input a number:";
+	cin >> n;
+	for (i = 2; i <= n - 1; i++)
+	{
+		if (n % i == 0)
+			break;
+	}
+	cout << "n = " << n;
+	if (i < n)       //i > n结果不对
+		cout << " is not prime" << endl;
+	else
+		cout << " is prime" << endl;
+	return 0;
+}
+
+
 //判断素数   函数写法
 #if(0)
 #include<stdio.h>
@@ -48,7 +72,7 @@ void prime(int n)
 		printf("%d is prime\n", n);
 }
 #endif
-
+*****************************************************************************************************************
 //p137  求100-200之间全部素数   功能实现方式不完全正确
 #if(0)
 #include<stdio.h>
@@ -120,7 +144,7 @@ int main()
 			cout << setw(5) << n;
 			m = m + 1;
 		}
-		//m += 1;     //该行如果放入上面if循环里，输出的格式会发生变化
+		//m += 1;     //该行如果放入上面if循环里，输出的格式会发生变化           跟C有区别
 		if (m % 10 == 0)
 			cout << endl;
 	}
