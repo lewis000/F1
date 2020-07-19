@@ -1,6 +1,7 @@
 //求最大最小值 
  
  //输出3个数中的最大最小值
+ C:
  #include<stdio.h>
  int main()
  {
@@ -17,6 +18,23 @@
  	printf("max = %d\nmin = %d",max,min);
  	return 0;
   } 
+
+C++:
+#if(0)
+#include<iostream>
+using namespace std;
+int main()
+{
+	int a, b, c, max;
+	int m;
+	cout << "please input 3 number:a,b,c:";
+	cin >> a >> b >> c;
+	m = a > b ? a : b;
+	max = m > c ? m : c;
+	cout << "max = " << max << endl;
+	return 0;
+}
+#endif
   
   //方法二
    #include<stdio.h>
@@ -88,6 +106,7 @@ int max(int x,int y)
 
 
  //方法一：冒泡法
+ C：
  #include<stdio.h>
  int main()
  {
@@ -115,6 +134,53 @@ int max(int x,int y)
 	printf("max = %d",a[2]);   //冒泡法最大值是数组最后一个数据,最小值是第一个数据
  	return 0;
  }
+ 
+C++：
+#if(0)
+#include<iostream>
+using namespace std;
+int main()
+{
+	int i, j, t;
+	int array[4];
+	cout << "please input 4 numbers:";
+	for (i = 0; i < 4; i++)
+	{
+		cin >> array[i];
+	}
+	/*     //i,j顺序颠倒，输出结果也对了
+	for (j = 0; j < 4; j++)
+	{
+		for (i = 0; i < 4 - j - 1; i++)
+		{
+			if (array[i] < array[i + 1])
+			{
+				t = array[i];
+				array[i] = array[i + 1];
+				array[i + 1] = t;
+			}
+		}
+		cout << array[i] << "\t" << endl;
+	}
+	*/
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4 - i - 1; j++)
+		{
+			if (array[j] > array[j + 1])
+			{
+				t = array[j];
+				array[j] = array[j + 1];
+				array[j + 1] = t;
+			}
+		}
+		cout << array[i] << endl;
+	}
+	return 0;
+}
+#endif
+
+
 
 
 
