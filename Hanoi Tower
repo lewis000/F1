@@ -45,3 +45,37 @@ void move(char x, char y)
 {
 	printf("%c-->%c\n", x, y);
 }
+
+C++：
+#include<iostream>
+#include<windows.h>
+using namespace std;
+int main()                   //声明hanoi函数，输入碟子数，调用hanoi函数 
+{
+	SetConsoleTitle("2020.7.21 C++");
+	void hanoi(int n,char one,char two,char three);
+	int m;
+	cout << "please input a number:";
+	cin >> m;
+	hanoi(m,'A','B','C');
+	
+	return 0;
+}
+
+void hanoi(int n,char one,char two,char three)
+{
+	void move(char x,char y);                  //声明move函数 
+	if(n == 1)            //如果只有一个碟子，直接移动 
+		move(one,three);
+	else                   //如果碟子数大于1 
+	{
+		hanoi(n-1,one,three,two);      //先将n-1个碟子，从1塔借助3塔移动到2塔 
+		move(one,three);               //将最后一个碟子从1塔移动到3塔 
+		hanoi(n-1,two,one,three);      //将剩下的n-1个碟子从2塔借助1塔移动到3塔 
+	}
+}
+
+void move(char x,char y)
+{
+	cout << x << "-->" << y <<endl;
+}
