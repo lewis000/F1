@@ -46,6 +46,7 @@ int main()
 
 
 //判断素数   函数写法
+C：-->也可直接改写成C++（算法不变，只改语法）
 #if(0)
 #include<stdio.h>
 int main()
@@ -72,6 +73,38 @@ void prime(int n)
 		printf("%d is prime\n", n);
 }
 #endif
+
+C++：
+#include<iostream>
+using namespace std;
+int main()
+{
+	int prime(int n);
+	int x;
+	//int y;
+	cout << "please input a number:";
+	cin >> x;
+	//y = prime(x);
+	if (prime(x))    //两种写法都对
+	//if(y)
+		cout << x << " is prime number" << endl;
+	else
+		cout << x << " is not prime number" << endl;
+	return 0;
+}
+
+int prime(int n)
+{
+	int flag = 1, i;
+	//for (i = 2; i <= n - 1 && flag == 1; i++)   //没有flag==1的判断条件，结果并没有报错
+	for (i = 2; i <= n - 1; i++)
+	{
+		if (n % i == 0)
+			flag = 0;
+	}
+	return(flag);
+}
+
 *****************************************************************************************************************
 //p137  求100-200之间全部素数   功能实现方式不完全正确
 #if(0)
