@@ -220,6 +220,8 @@ int main()
 	return 0;
 }
 //同一种算法，函数的表达形式
+C:
+#if(0)
 #include<stdio.h>
 #define N 6
 int main()
@@ -253,6 +255,50 @@ void sort(int a[], int n)
 		a[i] = t;
 	}
 }
+#endif
+
+C++:
+#if(0)
+#include<iostream>
+
+using namespace std;
+
+int main()
+{
+	void sort(int a[10]);
+	int b[10];
+	int i;
+	cout << "input 10:";
+	for (i = 0; i < 10; i++)
+		cin >> b[i];
+	sort(b);
+	for (i = 0; i < 10; i++)
+	{
+		cout << b[i] << "\t";
+	}
+	cout << endl;
+	return 0;
+}
+
+void sort(int a[10])
+{
+	int i, j, t, k;
+	for (i = 0; i < 10; i++)     //控制需要比较的次数（10个数需要比较10次）
+	{
+		k = i;
+		for (j = i + 1; j < 10; j++)    //控制每次需要比较的个数
+		{
+			if (a[j] > a[k])
+			{
+				k = j;
+			}
+			t = a[k];
+			a[k] = a[i];
+			a[i] = t;
+		}
+	}
+}
+#endif
 //由大到小排序--选择算法--指针变量做实参
 #if(0)
 #include<stdio.h>
