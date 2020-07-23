@@ -239,6 +239,39 @@ int max_colum(int a[I][J])
 }
 
 *************************************************************************************
+//倒叙输出数组
+C++:
+#if(0)
+//三个for循环，第一for用来输入，第二个for用来互换，第三个for用来输出 
+#include<iostream>
+#include<windows.h>
+using namespace std;
+int main()
+{
+	SetConsoleTitle("2020.7.23 C++");
+	const int n = 5;
+	int i,t,m,a[n];
+	cout << "input 5 numbers:";
+	for(i = 0;i < n;i++)
+	{
+		cin >> a[i];
+	}
+	m = n / 2;       //中位数 
+	for(i = 0;i < m;i++)      //中位数前几位数与后几位互换    即  a[i]  与  a[n-i-1]   互换 
+	{
+		t = a[i];
+		a[i] = a[n - i - 1];
+		a[n - i - 1] = t;
+	}
+	for(i = 0;i < n;i++)
+	{
+		cout << a[i] << "\t";
+	}
+	cout << endl;
+	return 0;
+}
+#endif
+
 //倒叙输出数组（一般函数写法） 
 #if(0)
 #include<stdio.h>
