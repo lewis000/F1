@@ -17,8 +17,10 @@ int main()
 	return 0;
 }
 
+*************************************************************************************************************
 
 //一个数组按一定顺序排列，此时插入一个数，该数按原规律插入数组 
+C:
 #include<stdio.h>
 #define N 5
 int main()
@@ -46,3 +48,48 @@ int main()
 	printf("%d",b);
 	return 0;
 }
+
+C++:
+#if(1)
+#include<iostream>
+
+using namespace std;
+const int N = 11;      //要注意下面各个范围的不同，尤其是N,N-1,N-2所在的位置
+int main()
+{
+	int a[11] = { 1,6,13,17,28,40,56,78,89,100 };   //数组共有11个数，但是只初始化了10个，预留一个给插入的值
+	int num, i, j;
+	cout << "array a:";
+	for (i = 0; i < N-1; i++)
+		cout << a[i] << "\t";
+	cout << endl;
+	cout << "input insert number:";
+	cin >> num;
+	if (num > a[N-2])    //输入的数比数组最后一个数大，直接放在该数组最后面
+		a[N-1] = num;
+	else
+	{
+		for (i = 0; i < N-1; i++)    //将剩余的数全部遍历一遍
+		{
+			if (a[i] > num)    //数组中的某一个数（i位置）比输入的数大
+			{
+				for (j = N - 2; j >= i; j--)
+				{
+					a[j + 1] = a[j];          //将原本j位置的数赋值到j+1位置
+				}
+				a[i] = num;       //将输入的数放在该（i）位置
+				break;
+				//}
+			}
+		}
+		//cout << "new array:";
+		//for (i = 0; i < 11; i++)
+			//cout << a[i] << "\t";
+	}
+	cout << "new array:";
+	for (i = 0; i < N; i++)
+		cout << a[i] << "\t";
+	cout << endl;
+	return 0;
+}
+#endif
