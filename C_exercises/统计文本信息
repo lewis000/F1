@@ -1,0 +1,68 @@
+
+C++：
+//统计一行文本信息，用getchar()输入字符
+#if(0)
+#include<iostream>
+using namespace std;
+int main()
+{
+	char c;
+	int letters = 0, space = 0, digit = 0, other = 0;
+	cout << "enter one line:";
+	while ((c = getchar()) != '\n')
+	{
+		if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z')
+			letters++;
+		else if (c == ' ')
+			space++;
+		else if (c >= '0' && c <= '9')
+			digit++;
+		else
+			other++;
+	}
+	cout << "letters = " << letters << '\t'
+		<< "space = " << space << '\t'
+		<< "digit = " << digit << '\t'
+		<< "other = " << other << endl;
+	return 0;
+}
+#endif
+
+
+C++：
+//统计多行文本信息，用cin.getline(字符数组名，接受个数n)
+#if(1)
+#include<iostream>
+#include<string>
+using namespace std;
+int main()
+{
+	int i, j, upper, digit, lower, space, other;
+	char text[3][80];                                //3行文本，每行80字符
+	upper = lower = digit = space = other = 0;
+	for (i = 0; i < 3; i++)                       //循环输入三行文本信息
+	{
+		cout << "please input line " << i + 1 << ":";
+		cin.getline(text[i],20);                   //输入多行文本字符                      //直接用gets(text[i])无法识别输出，是vs的问题？？？
+		for (j = 0; j < 80 && text[i][j] != '\0'; j++)          //对每行字符进行操作
+		{
+			if (text[i][j] >= 'A' && text[i][j] <= 'Z')          //统计大写字母A~Z
+				upper++;
+			else if (text[i][j] >= 'a' && text[i][j] <= 'z')     //统计小写字母a~z
+				lower++;
+			else if (text[i][j] >= '0' && text[i][j] <= '9')     //统计数字0~9
+				digit++;
+			else if (text[i][j] == ' ')                          //统计空格
+				space++;
+			else
+				other++;
+		}
+	}
+	cout << "upper:" << upper << endl;
+	cout << "lower:" << lower << endl;
+	cout << "digit:" << digit << endl;
+	cout << "space:" << space << endl;
+	cout << "other:" << other << endl;
+	return 0;
+}
+#endif
