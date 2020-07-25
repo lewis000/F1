@@ -1,0 +1,272 @@
+
+#include<iostream>
+
+#include<iomanip>
+#include<ctime>
+#include<cstdlib>
+#include<vector>
+#include<string>
+
+
+#include<windows.h>
+using namespace std;
+int main()
+{
+	SetConsoleTitle("my princess");
+	
+	int choice,temp,temp1,temp2,temp3;
+	
+	//1、为父女取名字
+	/**父亲姓名*/
+	string value_father_name;
+	/**女儿姓名*/
+	string value_daughter_name;
+	/**女儿生日月份*/
+	int value_birth_month;
+	/**女儿生日日期*/
+	int value_birth_date;
+	/**女儿星座*/
+	string value_daughter_constell;
+
+	/**女儿五项基本信息（体力、智力、魅力、道德、气质）*/
+	int value_daughter_baseinfos[5];    //两种方法都可以，但是下面的实用方法会不一样 
+	//vector<int> value_vec_baseinfo;    //动态分配数组 
+	/**五项基本属性名*/
+	string value_baseinfo_name[5] = {"体力","智力","魅力","道德","气质"};
+	
+	int value_daughter_gold = 500;
+	
+	/**星座二维数组*/ 
+	string constell_names[12][2] = {    //constell_names这个里有12个一维数组，每个一维数组里有两个元素 
+	{"山羊座","水瓶座"},//一月        //0就是左边，1就是右边 
+	{"水瓶座","双鱼座"},//二月 
+	{"双鱼座","白羊座"},//三月 
+	{"白羊座","金牛座"},//四月        //value_birth_month-1计算得出的就是月份        value_birth_date/constell_dates[value_birth_month-1计算得出的就是1或0 
+	{"金牛座","双子座"},//五月 
+	{"双子座","巨蟹座"},//六月 
+	{"巨蟹座","狮子座"},//七月 
+	{"狮子座","处女座"},//八月 
+	{"处女座","天秤座"},//九月 
+	{"天秤座","天蝎座"},//十月 
+	{"天蝎座","射手座"},//十一月 
+	{"射手座","山羊座"},//十二月 
+	};
+	/**父亲姓名*/
+	cout << "please input father's name:";
+	cin >> value_father_name;
+	/**女儿姓名*/
+	cout << "please input daughter's name:";
+	cin >> value_daughter_name;
+	/**女儿生日*/
+	cout << "please input daughter's birthday(mm dd):";
+	cin >> value_birth_month >> value_birth_date;
+	
+	/**各月份跨星座日期*/
+	int constell_dates[] = {20,19,21,20,21,22,23,23,23,24,23,22};
+	value_daughter_constell = constell_names[value_birth_month-1][value_birth_date/constell_dates[value_birth_month-1]];
+	
+	cout << "女儿的基本信息：" << endl;
+	cout << "姓名:" << value_daughter_name << endl;
+	cout << "生日:" << "1659-" << value_birth_month << "-" << value_birth_date << endl;
+	cout << "星座:" << value_daughter_constell << endl;
+	
+	if(value_daughter_constell == "白羊座")
+	{
+		value_daughter_baseinfos[0] = 80;value_daughter_baseinfos[1] = 15;value_daughter_baseinfos[2] = 15;value_daughter_baseinfos[3] = 11;value_daughter_baseinfos[4] = 21;
+		//value_vec_baseinfo.push_back(80);value_vec_baseinfo.push_back(15);value_vec_baseinfo.push_back(15);value_vec_baseinfo.push_back(11);value_vec_baseinfo.push_back(21);       //两种写法都对             
+	 } 
+	 else if(value_daughter_constell == "金牛座")
+	 {
+	 	value_daughter_baseinfos[0] = 81;value_daughter_baseinfos[1] = 16;value_daughter_baseinfos[2] = 16;value_daughter_baseinfos[3] = 12;value_daughter_baseinfos[4] = 20;
+	 }
+	 else if(value_daughter_constell == "双子座")
+	 {
+	 	value_daughter_baseinfos[0] = 82;value_daughter_baseinfos[1] = 17;value_daughter_baseinfos[2] = 17;value_daughter_baseinfos[3] = 13;value_daughter_baseinfos[4] = 19;
+	 }
+	 else if(value_daughter_constell == "巨蟹座")
+	 {
+	 	value_daughter_baseinfos[0] = 83;value_daughter_baseinfos[1] = 18;value_daughter_baseinfos[2] = 18;value_daughter_baseinfos[3] = 14;value_daughter_baseinfos[4] = 18;
+	 }
+	 else if(value_daughter_constell == "狮子座")
+	 {
+	 	value_daughter_baseinfos[0] = 84;value_daughter_baseinfos[1] = 19;value_daughter_baseinfos[2] = 19;value_daughter_baseinfos[3] = 15;value_daughter_baseinfos[4] = 17;
+	 }
+	 else if(value_daughter_constell == "处女座")
+	 {
+	 	value_daughter_baseinfos[0] = 85;value_daughter_baseinfos[1] = 20;value_daughter_baseinfos[2] = 20;value_daughter_baseinfos[3] = 16;value_daughter_baseinfos[4] = 16;
+	 }
+	 else if(value_daughter_constell == "天秤座")
+	 {
+	 	value_daughter_baseinfos[0] = 86;value_daughter_baseinfos[1] = 21;value_daughter_baseinfos[2] = 21;value_daughter_baseinfos[3] = 17;value_daughter_baseinfos[4] = 15;
+	 }
+	 else if(value_daughter_constell == "天蝎座")
+	 {
+	 	value_daughter_baseinfos[0] = 87;value_daughter_baseinfos[1] = 22;value_daughter_baseinfos[2] = 22;value_daughter_baseinfos[3] = 18;value_daughter_baseinfos[4] = 14;
+	 }
+	 else if(value_daughter_constell == "射手座")
+	 {
+	 	value_daughter_baseinfos[0] = 88;value_daughter_baseinfos[1] = 23;value_daughter_baseinfos[2] = 23;value_daughter_baseinfos[3] = 19;value_daughter_baseinfos[4] = 13;
+	 }
+	 else if(value_daughter_constell == "山羊座")
+	 {
+	 	value_daughter_baseinfos[0] = 89;value_daughter_baseinfos[1] = 24;value_daughter_baseinfos[2] = 24;value_daughter_baseinfos[3] = 20;value_daughter_baseinfos[4] = 12;
+	 }
+	 else if(value_daughter_constell == "水瓶座")
+	 {
+	 	value_daughter_baseinfos[0] = 90;value_daughter_baseinfos[1] = 25;value_daughter_baseinfos[2] = 25;value_daughter_baseinfos[3] = 21;value_daughter_baseinfos[4] = 11;
+	 }
+	 else if(value_daughter_constell == "双鱼座")
+	 {
+	 	value_daughter_baseinfos[0] = 91;value_daughter_baseinfos[1] = 26;value_daughter_baseinfos[2] = 26;value_daughter_baseinfos[3] = 22;value_daughter_baseinfos[4] = 10;
+	 }
+	 for(int i = 0;i < 5;i++)
+	 {
+	 	cout << value_daughter_baseinfos[i] << "\t";
+	 }
+	cout << endl;
+	
+	
+	
+	//2、为女儿录入初始信息 生日、星座     
+	//根据女儿的星座，设置游戏的基本参数（体力、智力、魅力、道德、气质） 
+	//3、开始游戏大循环
+	//游戏从1659年6月开始 
+	for(int year = 1659;year <= 1659+7;year++)
+	{
+		for(int month = (year == 1659)?6:1;month <= 12;month++)
+		{
+			//判断本月是否是女儿生日
+			if(month == value_birth_month) 
+			{
+				cout << "本月是"<< value_daughter_name << "生日，是否送礼物？" << endl;
+				//根据用户的输入进行判断 
+			}
+			//显示游戏主菜单
+			cout << "\n1、查看状态\n2、安排行程\n3、亲自谈话\n4、存档\n5、读档" << endl;
+			cin >> choice;
+			switch(choice)
+			{
+				case 1://查看状态
+					cout << "女儿的基本信息：" << endl;
+					cout << "姓名:" << value_daughter_name << endl;
+					cout << "生日:" << "1659-" << value_birth_month << "-" << value_birth_date << endl;
+					cout << "星座:" << value_daughter_constell << endl;
+					cout << "金币:" << value_daughter_gold << endl;
+					//打印核心属性
+					for(int i = 0;i < 5;i++)
+					{
+						cout << value_baseinfo_name[i] << ":" << setw(2) << value_daughter_baseinfos[i];
+						//计算实心方框的数量 
+						int solidCount = value_daughter_baseinfos[i] / 10;
+						for(int j = 0;j < 10;j++)
+						{
+							if(j < solidCount)
+								cout << "■";
+							else
+								cout << "□"; 
+						}
+						cout << endl;
+					} 
+					break;
+				case 2://安排行程   一个月最多安排三个行程 
+				 {
+				 	string month_parts[] = {"上旬","中旬","下旬"};
+				 	for(int i = 0;i < 3;i++)
+				 	{
+				 		cout << "--" << month << "月--" << month_parts[i] << endl;
+				 		cout << "1、学习武艺\n2、上私塾\n3、学习礼法\n4、出城修行\n5、打工赚钱" << endl;
+				 		cout << "please choice:";
+				 		cin >> choice;
+				 		//注意判断没钱的情况，强制打工
+						srand(time(NULL)); 
+				 		if(choice == 1)   //+体力  +魅力  -金钱 
+				 		{
+				 			value_daughter_baseinfos[0] += temp = rand() % 11;
+				 			value_daughter_baseinfos[2] += temp1 = rand() % 11;
+				 			value_daughter_gold -= temp2 = rand() % 51;
+				 			cout << "体力+" << temp << ",魅力+" << temp1 << ",金钱-" << temp2 <<endl;
+						 }
+						else if(choice == 2)
+						{
+							value_daughter_baseinfos[1] += temp = rand() % 11;
+							value_daughter_baseinfos[2] += temp1 = rand() % 11;
+							value_daughter_gold -= temp2 = rand() % 51;
+							cout << "智力+" << temp << ",魅力+" << temp1 << ",金钱-" << temp2 <<endl;
+						}
+						else if(choice == 3)
+						{
+							value_daughter_baseinfos[2] += temp1 = rand() % 11;
+							value_daughter_baseinfos[3] += temp = rand() % 11;
+							value_daughter_gold -= temp2 = rand() % 51;
+							cout << "道德+" << temp << ",魅力+" << temp1 << ",金钱-" << temp2 <<endl;
+						}
+						else if(choice == 4)
+						{
+							value_daughter_baseinfos[2] += temp1 = rand() % 11;
+							value_daughter_baseinfos[4] += temp = rand() % 11;
+							value_daughter_gold -= temp2 = rand() % 51;
+							cout << "气质+" << temp << ",魅力+" << temp1 << ",金钱-" << temp2 <<endl;
+						}
+						else if(choice == 5)
+						{
+							value_daughter_gold += temp2 = rand() % 101;
+							cout << "赚到了" << temp2 << "个金币" << endl;
+						}
+					 }
+				 }
+					break;
+				case 3:
+					break;
+				case 4:
+					break;
+				case 5:
+					break;
+				default:
+					break;
+			}
+			
+			 
+		}
+	}
+	
+	
+	//4、根据各项参数，判定游戏结束 
+	int sum = 0;
+	for(int i =0;i < 5;i++)
+	{
+		sum += value_daughter_baseinfos[i];
+	 } 
+	if(sum >= 2000)
+	{
+		cout << "登基为女王" << endl;
+	}
+	else if(sum >= 1800 && sum < 2000)
+	{
+		cout << "成为王妃" << endl;
+	}
+	else if(sum >= 1200 && sum < 1600)
+	{
+		int max_value = value_daughter_baseinfos[0];
+		int max_index = 0;
+		for(int i = 1;i < 5;i++)
+		{
+			if(max_value < value_daughter_baseinfos[i])
+			{
+				max_value = value_daughter_baseinfos[i];
+				max_index = i;
+			}
+		}
+		if(value_daughter_baseinfos[3] == value_daughter_baseinfos[max_index] && value_daughter_baseinfos[2] > value_daughter_baseinfos[4])
+		{
+			cout << value_daughter_name << "成为高级祭祀" <<endl;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	return 0;
+}
