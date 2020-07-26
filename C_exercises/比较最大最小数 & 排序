@@ -339,3 +339,42 @@ void sort(int x[], int n)
 	}
 }
 #endif
+
+C++：
+//指针变量做形参   选择法  （小-->大排序）
+#include<iostream>
+using namespace std;
+int main()
+{
+	void select_sort(int* p, int n);    //函数声明
+	int a[10], i;
+	cout << "input 10 numbers:";
+	for (i = 0; i < 10; i++)
+	{
+		cin >> a[i];                   //输入10个数
+	}
+	select_sort(a, 10);                 //调用函数
+	for (i = 0; i < 10; i++)
+		cout << a[i] << "\t";       //输出已排好序的数
+	cout << endl;
+	return 0;
+}
+
+void select_sort(int* p, int n)            //指针变量做形参     
+{
+	int i, j, k, t;
+	for (i = 0; i < n - 1; i++)
+	{
+		k = i;
+		for (j = i + 1; j < n; j++)
+		{
+			if (*(p+j) < *(p+k))            //指针法访问数组元素
+			{
+				k = j;
+			}
+		}
+		t = *(p + i);
+		*(p + i) = *(p + k);
+		*(p + k) = t;
+	}
+}
