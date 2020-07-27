@@ -378,3 +378,77 @@ void select_sort(int* p, int n)            //指针变量做形参
 		*(p + k) = t;
 	}
 }
+
+//一组乱序数组中最小的数与第一个数对换，最大的数与最后一个数对换（算是排序中的一种吧）
+
+#include<iostream>
+using namespace std;
+int main()
+{
+	void input(int* number);
+	void max_min_value(int* number);
+	void output(int* number);
+	int number[10];
+	input(number);
+	max_min_value(number);
+	output(number);
+	return 0;
+}
+
+void input(int* number)
+{
+	int i;
+	cout << "input 10 numbers:";
+	for (i = 0; i < 10; i++)
+	{
+		cin >> number[i];
+	}
+}
+
+void max_min_value(int* number)
+{
+	int* max, * min, * p, t;
+	max = min = number;         //使max和min都指向number[0]
+	for (p = number + 1; p < number + 10; p++)
+	{
+		if (*p > * max)
+		{
+			max = p;      //将大数地址赋给max
+		}
+		else if (*p < *min)
+		{
+			min = p;      //将小数地址赋给min
+		}
+	}
+	t = number[0];        //将最小数与第一个数调换
+	number[0] = *min;
+	*min = t;//将最小数与第一个数调换
+	if (max == number)         //如果第一个数刚好是最大数，则使max指向该最大数
+	{
+		max = min;          //这个if条件不理解，其他的都可以理解？？？？？？？？？？？？？？？
+	}
+	t = number[9];            //将最大数与最后一个数交换
+	number[9] = *max;
+	*max = t;
+}
+//输出函数以下两种写法都可（1、是数组写法  2、指针写法）
+void output(int* number)
+{
+	int i;
+	for (i = 0; i < 10; i++)
+	{
+		cout << number[i] << "\t";
+	}
+	cout << endl;
+}
+#if(0)
+void output(int* number)
+{
+	int* p;
+	for (p = number; p < number + 10; p++)
+	{
+		cout << *p << "\t";
+	}
+	cout << endl;
+}
+#endif
