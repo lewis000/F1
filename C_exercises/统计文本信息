@@ -66,3 +66,39 @@ int main()
 	return 0;
 }
 #endif
+
+
+*************************************************************************************************************************************************
+//三个字符串按小-->大顺序输出------string方法，程序中使用了指针和引用
+C++：
+#include<iostream>
+#include<string>
+using namespace std;
+int main()
+{
+	void change(string & st1, string & st2);
+	string str1 = "                            ",   //空格用来盛放字符串
+		str2 = "                              ",
+		str3 = "                              ";
+	char* p1 = &str1[0], * p2 = &str2[0], * p3 = &str3[0];
+	cout << "3 lines:";
+	cin.getline(p1, 20);
+	cin.getline(p2, 20);
+	cin.getline(p3, 20);
+	if (str1 > str2)
+		change(str1, str2);
+	if (str1 > str3)
+		change(str1, str3);
+	if (str2 > str3)
+		change(str2, str3);
+	cout << str1 << endl << str2 << endl << str3 << endl;
+	return 0;
+}
+
+void change(string& st1, string& st2)    //交换两字符串，形参为引用变量
+{
+	string st;
+	st = st1;
+	st1 = st2;
+	st2 = st;
+}
