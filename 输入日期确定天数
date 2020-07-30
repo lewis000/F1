@@ -6,8 +6,7 @@ month = int(input('请输入月份：'))
 day = int(input('请输入日期：'))
 sumday = 0
 monthday = [31,28,31,30,31,30,31,31,30,31,30,31]
-if ((year % 400 ==0) and (year % 100 == 0) and (year % 4 == 0)):  #闰年的判断方法肯定错了(year % 4 == 0 and year % 100 != 0 or
-                                                                   year % 400 == 0)，但是改了之后还是不对
+if ((year % 400 ==0) and (year % 100 == 0) and (year % 4 == 0)):  #闰年的判断方法肯定错了(year % 4 == 0 and year % 100 != 0 or year % 400 == 0)，但是改了之后还是不对
 	monthday[1] = 29
 for i in range(0,13):
 	if i < month - 1:
@@ -16,7 +15,39 @@ for i in range(0,13):
 sumday += day
 print(sumday)
 
-
+//不使用结构体
+C++：一般写法
+#include<iostream>
+using namespace std;
+/*
+struct y_m_d
+{
+	int year;
+	int month;
+	int day;
+};
+*/
+int main()
+{
+	//struct y_m_d date;
+	int year, month, day;
+	cout << "input year,month,day:";
+	//cin >> date.year >> date.month >> date.day;
+	cin >> year >> month >> day;
+	int day_tab[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
+	int day_sum = 0, i;
+	for (i = 0; i < month; i++)
+	{
+		day_sum += day_tab[i];
+	}
+	day_sum += day;
+	if ((year % 4 == 0 && year % 100 != 0 || year % 400 == 0) && month >= 3)
+		day_sum += 1;
+	cout << year << "-" << month << "-" << day 
+		<< " is the " << day_sum << "th in " << year << endl;
+	system("pause");
+	return 0;
+}
 
 //使用了结构体
 C++：一般写法
