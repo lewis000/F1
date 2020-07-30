@@ -1,5 +1,6 @@
 #输入年月日可以确定是第几天
 #功能基本可以实现，但是中间有错误，2月1日就是个错误
+python：
 year = int(input("请输入年份："))
 month = int(input('请输入月份：'))
 day = int(input('请输入日期：'))
@@ -14,3 +15,78 @@ for i in range(0,13):
 		sumday += monthday[i]
 sumday += day
 print(sumday)
+
+
+
+//使用了结构体
+C++：一般写法
+#include<iostream>
+using namespace std;
+struct y_m_d
+{
+	int year;
+	int month;
+	int day;
+};
+int main()
+{
+	struct y_m_d date;
+	cout << "input year,month,day:";
+	cin >> date.year >> date.month >> date.day;
+	int day_tab[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
+	int day_sum = 0, i;
+	for (i = 0; i < date.month; i++)
+	{
+		day_sum += day_tab[i];
+	}
+	day_sum += date.day;
+	if ((date.year % 4 == 0 && date.year % 100 != 0 || date.year % 400 == 0) && date.month >= 3)
+		day_sum += 1;
+	cout << date.year << "-" << date.month << "-" << date.day 
+		<< " is the " << day_sum << "th in " << date.year << endl;
+	system("pause");
+	return 0;
+}
+
+C++：函数写法
+#if(0)
+#include<iostream>
+using namespace std;
+struct y_m_d
+{
+	int year;
+	int month;
+	int day;
+};
+
+int main()
+{
+	struct y_m_d date;
+	int days(int year, int month, int day);            //计算天数的函数声明
+	int day_sum;
+	cout << "input year,month,day:";
+	cin >> date.year >> date.month >> date.day;
+	day_sum = days(date.year, date.month, date.day);         //函数调用
+	cout << date.year << "-" << date.month << "-" << date.day 
+		<< " is the " << day_sum << "th day in " << date.year << endl;
+	system("pause");
+	return 0;
+}
+
+int days(int year, int month, int day)
+{
+	int day_sum = 0, i;
+	int day_tab[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };             //每个月的天数
+	for (i = 1; i < month; i++)                     //计算前面所有月的总天数
+	{
+		day_sum = day_sum + day_tab[i];
+	}
+	day_sum = day_sum + day;         //加上当月输入的天数
+	if ((year % 4 == 0 && year % 100 != 0 || year % 400 == 0) && month >= 3)    //判断闰年并且月份大于等于3月，就要多加1天
+	{
+		day_sum = day_sum + 1;
+	}
+	return(day_sum);
+}
+#endif
+
