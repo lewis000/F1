@@ -1,0 +1,57 @@
+#include<iostream>
+using namespace std;
+//重载递增运算符
+
+//自定义整型
+class MyInteger
+{
+	friend ostream& operator<<(ostream& cout, MyInteger& myint);
+public:
+	MyInteger()
+	{
+		m_num = 0;
+	}
+
+
+	//重载++运算符
+
+
+	//重载前置++运算符        只能返回引用，可以对一个数据进行操作
+	MyInteger& operator++()
+	{
+		//先进行++运算
+		m_num++;
+		//再将自身做返回
+		return *this;
+	}
+	//重载后置++运算符     只能返回值，返回引用是非法操作
+	MyInteger operator++(int)    //int代表占位参数 只要int
+	{
+		//先记录当时结果
+		MyInteger temp = *this;
+		//递增
+		m_num++;
+		//返回结果
+		return temp;
+	}
+private:
+	int m_num;
+};
+
+//重载<<运算符      只能写成全局函数，不能写成成员函数
+ostream& operator<<(ostream& cout, MyInteger& myint)
+{
+	cout << myint.m_num;
+	return cout;
+}
+
+void test()
+{
+	MyInteger myint;
+	cout << ++myint << endl;
+}
+int main()
+{
+	test();
+	return 0;
+}
