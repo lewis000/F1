@@ -1,0 +1,117 @@
+#include<iostream>
+using namespace std;
+//声明抽象基类shape
+class Shape
+{
+public:
+	virtual float area() const { return 0.0; }      //虚函数
+	virtual float volume() const { return 0.0; }   //虚函数
+	virtual void shape_name() const = 0;   //纯虚函数   const不写会出错
+};
+//声明point类
+class Point :public Shape
+{
+public:
+	Point(float = 0, float = 0);         //声明构造函数
+	void setPoint(float, float);      
+	float getX() const { return x; }     //设定点x坐标
+	float getY() const { return y; }     //设定点y坐标
+	virtual void shape_name() const { cout << "Point:"; }      //对虚函数进行再定义
+	friend ostream& operator<<(ostream&, const Point&);        //运算符重载
+protected:
+	float x, y;
+};
+//定义point类成员函数
+Point::Point(float a, float b)            //定义构造函数
+{
+	x = a;
+	y = b;
+}
+void Point::setPoint(float a, float b)
+{
+	x = a;
+	y = b;
+}
+ostream& operator<<(ostream& output, const Point& p)
+{
+	output << "[" << p.x << "," << p.y << "]";
+	return output;
+}
+//声明circle类
+class Circle:public Point
+{
+public:
+	Circle(float x = 0, float y = 0, float r = 0);     //声明构造函数
+	void setRadius(float);               //设定半径
+	float getRadius() const;            //取半径的值
+	virtual float area() const;         //对虚函数进行再定义
+	virtual void shape_name() const { cout << "Circle:"; }    //对虚函数进行再定义
+	friend ostream& operator<<(ostream&, const Circle&);    //运算符重载
+protected:
+	float radius;
+};
+//声明circle类成员函数
+Circle::Circle(float a,float b,float r):Point(a,b),radius(r){}      //定义构造函数
+void Circle::setRadius(float r) { radius = r; }
+float Circle::getRadius() const { return radius; }
+float Circle::area() const { return 3.14159 * radius * radius; }
+ostream& operator<<(ostream& output, const Circle& c)
+{
+	output << "[" << c.x << "," << c.y << "],r = " << c.radius;
+	return output;
+}
+//声明cylinder类
+class Cylinder :public Circle
+{
+public:
+	Cylinder(float x = 0, float y = 0, float r = 0, float h = 0);     //声明构造函数
+	void setHeight(float);       //设定圆柱的高
+	virtual float area() const;      //重载虚函数
+	virtual float volume() const;     //重载虚函数
+	virtual void shape_name() const { cout << "Cylinder:"; }     //重载虚函数
+	friend ostream& operator<<(ostream&, const Cylinder&);       //运算符重载
+protected:
+	float height;
+};
+//定义cylinder类成员函数
+Cylinder::Cylinder(float a,float b,float r,float h):Circle(a,b,r),height(h){}     //定义构造函数
+void Cylinder::setHeight(float h) { height = h; }     //设定圆柱的高
+float Cylinder::area() const    
+{ return 2 * Circle::area() + 2 * 3.14159 * radius * height; }   //计算圆柱表面积
+float Cylinder::volume()const
+{
+	return Circle::area() * height;     //计算圆柱体积
+}
+ostream& operator<<(ostream& output, const Cylinder& cy)
+{
+	output << "[" << cy.x << "," << cy.y << "],r = " << cy.radius << ",h = " << cy.height;
+	return output;
+}
+
+//main函数
+int main()
+{
+	Point point(3.2, 4.5);    //建立point对象
+	Circle circle(2.4, 1.2, 5.6);   //建立circle对象
+	Cylinder cylinder(3.5, 6.4, 5.2, 10.5);    //建立cylinder对象
+	point.shape_name();    //用对象名建立静态关联
+	cout << point << endl;  //输出点的数据
+	circle.shape_name();    //静态关联
+	cout << circle << endl;   //输出圆的数据
+	cylinder.shape_name();     //静态关联
+	cout << cylinder << endl;    //输出圆柱的数据
+	Shape* pt;    //定义基类指针
+	pt = &point;    //使指针指向point类对象
+	pt->shape_name();    //用指针建立动态关联
+	cout << "x = " << point.getX() << "y = " << point.getY() << "\narea = " << pt->area()
+		<< "\nvolume = " << pt->volume() << endl;    //输出点的数据
+	pt = &circle;
+	pt->shape_name();
+	cout << "x = " << circle.getX() << "y = " << circle.getY() << "\narea = " << pt->area()
+		<< "\nvolume = " << pt->volume() << endl;    //输出园的数据
+	pt = &cylinder;
+	pt->shape_name();
+	cout << "x = " << cylinder.getX() << "y = " << cylinder.getY() << "\narea = " << pt->area()
+		<< "\nvolume = " << pt->volume() << endl;       //输出圆柱的数据
+	return 0;
+}
