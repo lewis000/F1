@@ -1,0 +1,204 @@
+//主函数
+#include<iostream>
+using namespace std;
+#include"MyArray.hpp"
+#include<string>
+
+//测试代码
+void printIntArray(MyArray<int> & arr)
+{
+	for (int i = 0; i < arr.getSize(); i++)
+	{
+		cout << arr[i] << endl;
+	}
+}
+
+void test01()
+{
+	MyArray<int> arr1(5);
+
+	for (int i = 0; i < 5; i++)
+	{
+		//利用尾插法向数组中插入数据
+		arr1.Push_Back(i);
+	}
+	cout << "arr1的打印输出:" << endl;
+
+	printIntArray(arr1);
+
+	cout << "arr1的容量：" << arr1.getCapacity() << endl;
+	cout << "arr1的大小：" << arr1.getSize() << endl;
+
+	//拷贝
+	MyArray<int>arr2(arr1);
+
+	cout << "arr2的打印输出:" << endl;
+	printIntArray(arr2);
+
+	//尾删
+	arr2.Pop_Back();
+	cout << "arr2尾删后：" << endl;
+	cout << "arr2的容量：" << arr2.getCapacity() << endl;
+	cout << "arr2的大小：" << arr2.getSize() << endl;
+	printIntArray(arr2);
+
+}
+
+//测试自定义类型数组
+class Person
+{
+public:
+	Person() {};
+	Person(string name, int age)
+	{
+		this->m_Name = name;
+		this->m_Age = age;
+	}
+	string m_Name;
+	int m_Age;
+};
+
+void printPersonArray(MyArray<Person>& arr)
+{
+	for (int i = 0; i < arr.getSize(); i++)
+	{
+		cout << "姓名：" << arr[i].m_Name << " 数字：" << arr[i].m_Age << endl;
+	}
+}
+
+void test02()
+{
+	MyArray<Person>arr(10);
+	Person p1("lewis", 44);
+	Person p2("max", 33);
+
+	//将数据插入到数组中
+	arr.Push_Back(p1);
+	arr.Push_Back(p2);
+
+	//打印数组
+	printPersonArray(arr);
+
+	cout << "数组容量：" << arr.getCapacity() << endl;
+	cout << "数组大小：" << arr.getSize() << endl;
+}
+//以上全是测试代码
+
+int main()
+{
+	test01();
+	test02();
+	return 0;
+}
+
+*******************************************************************************************************
+
+//.hpp文件
+//自己的通用的数组类
+#pragma once
+#include<iostream>
+using namespace std;
+
+template<class T>
+class MyArray
+{
+public:
+	//有参构造   参数  容量
+	MyArray(int capacity)
+	{
+		this->m_Capacity = capacity;
+		this->m_Size = 0;
+		this->pAddress = new T[this->m_Capacity];
+	}
+
+	//拷贝构造
+	MyArray(const MyArray& arr)
+	{
+		this->m_Capacity = arr.m_Capacity;
+		this->m_Size = arr.m_Size;
+		//this->pAddress = arr.pAddress;   //浅拷贝，会带来重复释放的问题
+		this->pAddress = new T[arr.m_Capacity];   //深拷贝
+		//将arr中的数据全部拷贝过来
+		for (int i = 0; i < this->m_Size; i++)
+		{
+			this->pAddress[i] = arr.pAddress[i];
+		}
+	}
+
+	//operator=  防止浅拷贝问题（重载=）
+	MyArray& operator=(const MyArray& arr)
+	{
+		//先判断原来堆区是否有数据，如果有先释放
+		if (this->pAddress != NULL)
+		{
+			delete[] this->pAddress;
+			this->pAddress = NULL;
+			this->m_Capacity = 0;
+			this->m_Size = 0;
+		}
+
+		//深拷贝
+		this->m_Capacity = arr.m_Capacity;
+		this->m_Size = arr.m_Size;
+		this->pAddress = new T[arr.m_Capacity];
+		for (int i = 0; i < this.m_Size; i++)
+		{
+			this->pAddress[i] = arr.pAddress[i];
+		}
+		return *this;
+	}
+
+	//尾插法
+	void Push_Back(const T& val)
+	{
+		//判断容量是否等于大小
+		if (this->m_Capacity == this->m_Size)
+		{
+			return;
+		}
+		this->pAddress[this->m_Size] = val;  //在数组末尾插入数字
+		this->m_Size++;    //更新数组大小
+	}
+
+	//尾删法
+	void Pop_Back()
+	{
+		//让用户访问不到最后一个元素，即为尾删，逻辑上的删除
+		if (this->m_Size == 0)
+		{
+			return;
+		}
+		this->m_Size--;
+	}
+
+	//通过下标方式访问数组中的元素
+	T& operator[](int index)    //重载[]
+	{
+		return this->pAddress[index];
+	}
+
+	//返回数组容量
+	int getCapacity()
+	{
+		return this->m_Capacity;
+	}
+	//返回数组大小
+	int getSize()
+	{
+		return this->m_Size;
+	}
+	//析构函数
+	~MyArray()
+	{
+		if (this->pAddress != NULL)
+		{
+			delete[] this->pAddress;
+			this->pAddress = NULL;
+		}
+	}
+private:
+	T* pAddress;    //指针指向堆区开辟的真实数组
+	int m_Capacity;   //数组容量
+	int m_Size;      //数组大小
+
+};
