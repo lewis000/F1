@@ -1,0 +1,68 @@
+#if(1)
+#include<iostream>
+using namespace std;
+#include<string>
+
+void test01()
+{
+	//查找
+	string str1 = "abcdefgde";
+	int pos = str1.find("de");   //返回的是查找的第一个字符串的位置
+	int pos1 = str1.find("df");   //没有，返回-1
+	cout << "pos = " << pos << endl;
+	cout << "pos1 = " << pos1 << endl;
+	
+	//rfind和find区别
+	//rfind从右往左查找，find从左往右查找
+
+	int pos2 = str1.rfind("de");   //返回的是查找的第一个字符串的位置
+	int pos3 = str1.rfind("df");   //没有，返回-1
+	cout << "pos2 = " << pos2 << endl;
+	cout << "pos3 = " << pos3 << endl;
+	//替换
+	//从1号位置起3个字符替换为“1111”
+	string str2 = "abcdefg";
+	str2.replace(1, 3, "1111");
+	cout << "str2 = " << str2 << endl;
+
+	//比较
+	string str3 = "hello";
+	string str4 = "hello";
+	int ret = str3.compare(str4);
+	if (ret == 0)
+	{
+		cout << "str3 = str4" << endl;
+	}
+	else if (ret > 0)
+	{
+		cout << "str3 > str4" << endl;
+	}
+	else
+	{
+		cout << "str3 < str4" << endl;
+	}
+
+	//存取
+	//1.通过[]访问
+	for (int i = 0; i < str3.size(); i++)
+	{
+		cout << str3[i];
+	}
+	cout << endl;
+	//2.通过at方式访问
+	for (int i = 0; i < str3.size(); i++)
+	{
+		cout << str3.at(i);
+	}
+
+	//插入
+
+	//删除
+}
+
+int main()
+{
+	test01();
+	return 0;
+}
+#endif
