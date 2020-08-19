@@ -1,0 +1,108 @@
+//vector容器
+#include<iostream>
+using namespace std;
+#include<vector>
+
+void print(vector<int>& v)
+{
+	for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
+	{
+		cout << *it << " ";
+	}
+	cout << endl;
+}
+
+void test01()
+{
+	//容器构造
+	vector<int>v1;  //默认构造，无参构造
+	for (int i = 0; i < 10; i++)
+	{
+		v1.push_back(i);
+	}
+	print(v1);
+
+	//通过区间方式构造
+	vector<int>v2(v1.begin(), v1.end());
+	print(v2);
+
+	//n个elem方式
+	vector<int>v3(10, 100);   //10个100
+	print(v3);
+
+	//拷贝构造
+	vector<int>v4(v3);
+	print(v4);
+
+	//赋值  operator=
+	vector<int>v5;
+	v5 = v1;
+	print(v5);
+
+	//容量和大小
+	vector<int>v6;
+	if (v6.empty())   //为真，容器为空
+	{
+		cout << "v is empty" << endl;
+		cout << "v的容量：" << v6.capacity() << endl;
+		cout << "v的大小：" << v6.size() << endl;
+	}
+	else
+	{
+		cout << "v is not empty" << endl;
+		cout << "v的容量：" << v6.capacity() << endl;
+		cout << "v的大小：" << v6.size() << endl;
+	}
+
+	//重新指定大小
+	v5.resize(15);
+	print(v5);
+
+	//插入删除
+	v1.pop_back();   //尾删
+	print(v1);
+
+	//插入
+	v1.insert(v1.begin() + 1, 2, 100);   //第一个参数是插入位置（是迭代器），第二个参数是插入个数（可以不写，默认为1），第三个参数是插入的数据
+	print(v1);
+
+	//删除
+	v1.erase(v1.begin() + 1);
+	print(v1);
+	//以下两种访问方式与string容器一样
+	//利用[]方式访问
+	for (int i = 0; i < v1.size(); i++)
+	{
+		cout << v1[i] << "\t";
+	}
+	cout << endl;
+
+	//利用at()方式访问
+	for (int i = 0; i < v1.size(); i++)
+	{
+		cout << v1.at(i) << "\t";
+	}
+	cout << endl;
+
+	//预留空间
+	vector<int>v7;
+	int num = 0;
+	int* p = NULL;
+	v7.reserve(100000);
+	for (int i = 0; i < 100000; i++)
+	{
+		v7.push_back(i);
+		if (p != &v7[0])
+		{
+			p = &v7[0];
+			num++;
+		}
+	}
+	cout << "num = " << num << endl;
+}
+
+int main()
+{
+	test01();
+	return 0;
+}
