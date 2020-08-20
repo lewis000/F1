@@ -1,0 +1,29 @@
+#include<iostream>
+#include<stack>
+using namespace std;
+
+void test01()
+{
+	stack<int>s;
+	s.push(13);
+	s.push(44);
+	s.push(33);
+	s.push(11);
+
+	cout << "大小：" << s.size() << endl;
+	while (!s.empty())
+	{
+		//查看栈顶元素
+		cout << "元素为：" << s.top() << endl;
+
+		//出栈
+		s.pop();
+	}
+	cout << "大小：" << s.size() << endl;
+}
+
+int main()
+{
+	test01();
+	return 0;
+}
