@@ -109,3 +109,57 @@ int main()
 	test01();
 	return 0;
 }
+
+
+**************************************************************************
+list容器
+
+#include<iostream>
+#include<list>
+#include<algorithm>
+using namespace std;
+
+void printlist(const list<int>& l)
+{
+	for (list<int>::const_iterator it = l.begin(); it != l.end(); it++)
+	{
+		cout << *it << " ";
+	}
+	cout << endl;
+}
+
+bool mycompare(int v1, int v2)
+{
+	//降序  让第一个数>第二个数
+	return v1 > v2;
+}
+void test01()
+{
+	list<int>l;
+	l.push_back(11);
+	l.push_back(44);
+	l.push_back(13);
+	l.push_back(33);
+	printlist(l);
+	
+	cout << "first num = " << l.front() << endl;
+	cout << "last num = " << l.back() << endl;
+
+	//反转
+	l.reverse();
+	printlist(l);
+
+	//所有不支持随机访问迭代器的内容，不可以用标准算法
+	//不支持随机访问迭代器的容器，内部会提供对应一些算法
+	//排序
+	l.sort();   //默认从小到大升序排列
+	printlist(l);
+
+	l.sort(mycompare);   //降序排列，mycompare是自己写的函数
+	printlist(l);
+}
+int main()
+{
+	test01();
+	return 0;
+}
