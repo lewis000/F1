@@ -141,7 +141,7 @@ void test01()
 	l.push_back(13);
 	l.push_back(33);
 	printlist(l);
-	
+	//数据存取
 	cout << "first num = " << l.front() << endl;
 	cout << "last num = " << l.back() << endl;
 
