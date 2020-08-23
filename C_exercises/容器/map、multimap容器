@@ -1,0 +1,146 @@
+#include<iostream>
+#include<map>
+#include<string>
+using namespace std;
+
+class mycompair
+{
+public:
+	bool operator()(int v1,int v2)const
+	{
+		return v1 > v2;
+	}
+};
+
+class Person
+{
+public:
+	Person(string name,int age)
+	{
+		m_name = name;
+		m_age = age;
+	}
+	string m_name;
+	int m_age;
+};
+
+class compairPerson
+{
+	bool operator()(const Person& p1, const Person& p2)const
+	{
+		return p1.m_age > p2.m_age;
+	}
+};
+
+//重载<<
+ostream& operator<<(ostream& cout, Person& p)
+{
+	cout << p.m_name << p.m_age << endl;
+	return cout;
+}
+
+void print(map<int, int>& m)
+{
+	for (map<int, int>::iterator it = m.begin(); it != m.end(); it++)
+	{
+		cout << "key = " << (*it).first << " value = " << it->second << endl;
+	}
+}
+void test01()
+{
+	map<int, int>m;
+
+	m.insert(pair<int, int>(1, 11));   //1是key值，11是value值,不允许有重复的key值
+	m.insert(pair<int, int>(2, 33));   //按照key值自定排序
+	m.insert(pair<int, int>(3, 13));
+	m.insert(pair<int, int>(4, 44));
+
+	print(m);
+
+	//拷贝构造
+	map<int, int>m1(m);
+	print(m1);
+
+	//赋值
+	map<int, int>m2;
+	m2 = m;
+	print(m2);
+
+	//大小、交换  -->与set类似
+	if (m.empty())
+	{
+		cout << "empty" << endl;
+	}
+	else
+	{
+		cout << "not enpty" << endl;
+		cout << "size = " << m.size() << endl;
+	}
+
+	//插入、删除
+	//插入方法1
+	m.insert(pair<int, int>(11, 10));
+	print(m);
+	//插入方法2
+	m.insert(make_pair(11, 10));
+	print(m);
+	//插入方法3
+	m.insert(map<int, int>::value_type(11, 10));
+	print(m);
+	//插入方法4
+	m[11] = 10;     //[]不建议用来插数，利用key来访问value
+	print(m);
+
+	//删除
+	m1.erase(m1.begin());
+	print(m1);
+
+	m1.erase(3);   //按照key删除
+	print(m1);
+
+	//查找
+	map<int, int>::iterator pos = m.find(2);   //找的是key
+	if (pos != m.end())
+	{
+		cout << "find, key = " << (*pos).first << " value = " << pos->second << endl;
+	}
+	else
+	{
+		cout << "not find" << endl;
+	}
+	//统计
+	int num = m.count(3);   //也是key值，map中不允许出现重复的key值，multimap允许出现重复key值
+	cout << "num = " << num << endl;
+
+	//排序
+	map<int, int,mycompair>m9;
+	m9.insert(make_pair(1, 11));
+	m9.insert(make_pair(2, 33));
+	m9.insert(make_pair(3, 13));
+	m9.insert(make_pair(4, 44));
+
+	for (map<int, int, mycompair>::iterator it = m9.begin(); it != m9.end(); it++)
+	{
+		cout << "key = " << it->first << " value = " << (*it).second << endl;
+	}
+	//自定义数据类型      有问题？？？？
+	Person p1("lewis", 44);
+	Person p2("max", 33);
+	Person p3("ric", 3);
+
+	map<int, Person, compairPerson>m0;
+	m0.insert(make_pair(1, p1));
+	m0.insert(make_pair(2, p2));
+	m0.insert(make_pair(3, p3));
+
+	for (map<int, Person, compairPerson>::iterator it = m0.begin(); it != m0.end(); it++)
+	{
+		cout << "key = " << it->first << " value = " << it->second << endl;    //需要重载<<
+	}
+}
+
+int main()
+{
+	test01();
+	return 0;
+}
