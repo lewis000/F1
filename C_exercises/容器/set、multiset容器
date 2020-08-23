@@ -1,0 +1,147 @@
+#include<iostream>
+#include<set>
+#include<string>
+using namespace std;
+
+//仿函数（重载（））
+class mycompare
+{
+public:
+	bool operator()(int v1,int v2)const    //const不能少
+	{
+		return v1 > v2;
+	}
+};
+
+class Person
+{
+public:
+	Person(string name, int age)
+	{
+		this->m_name = name;
+		this->m_age = age;
+	}
+	string m_name;
+	int m_age;
+};
+
+class comparePerson
+{
+public:
+	bool operator()(const Person &pe1,const Person &pe2)const    //第三个const不能少
+	{
+		//年龄  降序排列
+		return pe1.m_age > pe1.m_age;
+	}
+};
+
+void printSet(set<int>& s)
+{
+	for (set<int>::iterator it = s.begin(); it != s.end(); it++)
+	{
+		cout << *it << " ";
+	}
+	cout << endl;
+}
+
+//set容器构造和赋值
+void test01()
+{
+	set<int>s1;
+
+	//set插入数据，只有insert方式
+	s1.insert(11);
+	s1.insert(44);
+	s1.insert(13);
+	s1.insert(33);
+	//set容器自动被排序，不允许插入重复的值
+	printSet(s1);
+
+	//拷贝构造
+	set<int>s2(s1);
+	printSet(s2);
+
+	//赋值
+	set<int>s3;
+	s3 = s1;
+	printSet(s3);
+
+	//大小
+	//判断是否为空
+	if (!s1.empty())
+	{
+		cout << "不为空" << endl;
+		cout << "大小：" << s1.size() << endl;
+	}
+	else
+	{
+		cout << "为空" << endl;
+	}
+
+	//交换
+	set<int>s4;
+	s4.insert(5);
+	s4.swap(s2);
+	printSet(s4);
+	printSet(s2);
+
+	//删除
+	s1.erase(s1.begin());    //删除的是排序后的第一个数
+	printSet(s1);
+
+	s1.erase(13);
+	printSet(s1);
+
+	//查找
+	set<int>::iterator pos = s1.find(44);
+	if (pos != s1.end())
+	{
+		cout << "finded " << *pos << endl;
+	}
+	else
+	{
+		cout << "not find" << endl;
+	}
+
+	//统计
+	int num = s1.count(44);  //对于set而言，结果为0或1
+	cout << "num = " << num << endl;
+
+	//排序
+	set<int,mycompare>s6;   //在插入前指定好排序规则
+
+	s6.insert(11);
+	s6.insert(44);
+	s6.insert(13);
+	s6.insert(33);
+
+	for (set<int, mycompare>::iterator it = s6.begin(); it != s6.end(); it++)
+	{
+		cout << *it << " ";
+ 	}
+	cout << endl;
+
+	//自定义类型数据，必须指定排序规则
+	Person p1("lewis", 44);
+	Person p2("max", 33);
+	Person p3("ric", 3);
+
+	set<Person, comparePerson>s;
+
+	s.insert(p1);
+	s.insert(p2);
+	s.insert(p3);
+	//有问题，为什么只输出一个人的信息？？？
+	for (set<Person, comparePerson>::iterator it = s.begin(); it != s.end(); it++)
+	{
+		cout << "姓名：" << it->m_name << " 年龄：" << it->m_age << endl;
+	}
+
+
+}
+
+int main()
+{
+	test01();
+	return 0;
+}
