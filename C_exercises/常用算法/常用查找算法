@@ -1,0 +1,90 @@
+1、find
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<string>
+using namespace std;
+
+//查找内置数据类型
+void test01()
+{
+	vector<int>v;
+	for (int i = 0; i < 10; i++)
+	{
+		v.push_back(i);
+	}
+	//查找是否存在5
+	vector<int>::iterator it = find(v.begin(), v.end(), 5);
+	if (it == v.end())
+	{
+		cout << "not find" << endl;
+	}
+	else
+	{
+		cout << "find,it = " << *it << endl;
+	}
+}
+
+class Person
+{
+public:
+	Person(string name, int age)
+	{
+		this->m_name = name;
+		this->m_age = age;
+	}
+
+	//重载==  底层find知道如何对比person数据类型
+	bool operator==(const Person& p)
+	{
+		if (this->m_name == p.m_name && this->m_age == p.m_age)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	string m_name;
+	int m_age;
+
+};
+//查找自定义数据类型
+void test02()
+{
+	vector<Person>v;
+	//创建数据
+	Person p1("lewis", 44);
+	Person p2("max", 33);
+	Person p3("ric", 3);
+	//放入到容器中
+	v.push_back(p1);
+	v.push_back(p2);
+	v.push_back(p3);
+
+	Person p("lewis", 44);
+	vector<Person>::iterator it = find(v.begin(), v.end(), p);
+	if (it == v.end())
+	{
+		cout << "not find" << endl;
+	}
+	else
+	{
+		cout << "find,name = " << it->m_name << " age = " << it->m_age << endl;
+	}
+}
+
+
+int main()
+{
+	test01();
+	test02();
+	return 0;
+}
+
+**************************************************************************************************************************************************
+
+2、find_if
+
