@@ -40,4 +40,50 @@ int main()
 }
 
 *******************************************************************************
+//transform
 
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+class Transform
+{
+public:
+	int operator()(int v)
+	{
+		return v+10;
+	}
+};
+
+
+void test01()
+{
+	vector<int>v;
+	for (int i = 0; i < 10; i++)
+	{
+		v.push_back(i);
+	}
+
+	for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
+	{
+		cout << *it << " ";
+	}
+	cout << endl;
+
+	vector<int>vt;
+	vt.resize(v.size());    //目标容器必须提前开辟空间
+
+	transform(v.begin(), v.end(), vt.begin(), Transform());
+
+	for (vector<int>::iterator it = vt.begin(); it != vt.end(); it++)
+	{
+		cout << *it << " ";
+	}
+}
+
+int main()
+{
+	test01();
+	return 0;
+}
