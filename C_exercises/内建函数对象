@@ -1,0 +1,92 @@
+//内建函数对象
+//算数仿函数
+
+#include<iostream>
+#include<functional>  //内建函数对象头文件
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+class mycompare
+{
+public:
+	bool operator()(int v1, int v2)
+	{
+		return v1 > v2;
+	}
+};
+//negate  一元仿函数  取反仿函数
+void test01()
+{
+	negate<int>n;
+	cout << n(50) << endl;
+}
+
+//plus  二元仿函数   加法
+//minus：减法   multiplies：乘法    divides：除法     modulus：取模    
+void test02()
+{
+	plus<int>p;
+	cout << p(11, 33) << endl;
+}
+
+//关系仿函数
+//equal:等于  not_equal:不等于  greater：大于  greater_equal：大于等于  less：小于  less_equal:小于等于
+void test03()
+{
+	vector<int>v;
+	v.push_back(11);
+	v.push_back(33);
+	v.push_back(13);
+	v.push_back(5);
+	v.push_back(44);
+
+	for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
+	{
+		cout << *it << " ";
+	}
+	cout << endl;
+
+	//sort(v.begin(), v.end(), mycompare());    //此两句效果
+	sort(v.begin(), v.end(), greater<int>());    //一致
+	for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
+	{
+		cout << *it << " ";
+	}
+}
+//logical_and  logical_or    logical_not
+void test04()
+{
+	vector<bool>v;
+	v.push_back(true);
+	v.push_back(false);
+	v.push_back(true);
+	v.push_back(false);
+
+	for (vector<bool>::iterator it = v.begin(); it != v.end(); it++)
+	{
+		cout << *it << " ";
+	}
+	cout << endl;
+
+	//利用逻辑非  将容器v搬运到容器v2中，并执行取反操作
+	vector<bool>v2;
+	v2.resize(v.size());
+	//第一、二个参数使想搬运的容器区间，第三个参数使本容器的放置数据的位置，第四个参数是逻辑非
+	transform(v.begin(), v.end(), v2.begin(), logical_not<bool>());
+
+	for (vector<bool>::iterator it = v2.begin(); it != v2.end(); it++)
+	{
+		cout << *it << " ";
+	}
+	cout << endl;
+}
+
+int main()
+{
+	test01();
+	test02();
+	test03();
+	test04();
+	return 0;
+}
