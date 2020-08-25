@@ -44,7 +44,7 @@ int main()
 
 **************************************************************************************************************************
 
-2、random_dhuffle    ---洗牌，随机打乱有序序列
+2、random_shuffle    ---洗牌，随机打乱有序序列
 
 #include<iostream>
 #include<vector>
@@ -80,5 +80,43 @@ int main()
 
 *************************************************************************************************************************
 
-3、
+3、merge：将两个容器合并成一个容器-->必须是两个相同顺序的有序序列
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+void print(int val)
+{
+	cout << val << " ";
+}
+
+void test01()
+{
+	vector<int>v1;
+	vector<int>v2;
+	for (int i = 0; i < 10; i++)
+	{
+		v1.push_back(i);
+		v2.push_back(i + 10);
+	}
+	//目标容器
+	vector<int>vt;
+
+	vt.resize(v1.size() + v2.size());    //一定要先开辟空间
+	merge(v1.begin(), v1.end(), v2.begin(), v2.end(), vt.begin());
+
+	for_each(vt.begin(), vt.end(), print);
+}
+
+int main()
+{
+	test01();
+	return 0;
+}
+
+*********************************************************************************************************************************
+
+4、
 
