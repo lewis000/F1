@@ -66,3 +66,105 @@ int main()
 	test01();
 	return 0;
 }
+
+**********************************************************************************************************************
+
+3、replace_if
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+void print(int val)
+{
+	cout << val << " ";
+}
+
+class Greater0
+{
+public:
+	bool operator()(int val)
+	{
+		return val < 3;
+	}
+};
+
+void test01()
+{
+	vector<int>v1;
+	v1.push_back(13);
+	v1.push_back(11);
+	v1.push_back(44);
+	v1.push_back(0);
+	v1.push_back(33);
+	v1.push_back(3);
+	v1.push_back(0);
+
+	replace_if(v1.begin(), v1.end(), Greater0(), 44);    //将小于3的数字全部替换为44
+	for_each(v1.begin(), v1.end(), print);
+}
+
+int main()
+{
+	test01();
+	return 0;
+}
+
+*************************************************************************************************************************************
+
+4、swap
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+void print(int val)
+{
+	cout << val << " ";
+}
+
+class Greater0
+{
+public:
+	bool operator()(int val)
+	{
+		return val < 3;
+	}
+};
+
+void test01()
+{
+	vector<int>v1;
+	vector<int>v2;
+	v1.push_back(13);
+	v1.push_back(11);
+	v1.push_back(44);
+	v1.push_back(0);
+	v1.push_back(33);
+	v1.push_back(3);
+	v1.push_back(0);
+
+	for (int i = 0; i < 10; i++)
+	{
+		v2.push_back(i);
+	}
+	cout << "交换前：" << endl;
+	for_each(v1.begin(), v1.end(), print);
+	cout << endl;
+	for_each(v2.begin(), v2.end(), print);
+	cout << endl;
+
+	swap(v1, v2);   //将两个容器交换，可以相同数据个数，也可以不同数据个数     数据类型必须一致
+	cout << "交换后：" << endl;
+	for_each(v1.begin(), v1.end(), print);
+	cout << endl;
+	for_each(v2.begin(), v2.end(), print);
+}
+
+int main()
+{
+	test01();
+	return 0;
+}
