@@ -11,15 +11,6 @@ void print(int val)
 	cout << val << " ";
 }
 
-class Greater0
-{
-public:
-	bool operator()(int val)
-	{
-		return val < 3;
-	}
-};
-
 void test01()
 {
 	vector<int>v1;
@@ -59,3 +50,32 @@ int main()
 ***************************************************************************************************************
 
 2、
+
+#include<iostream>
+#include<vector>
+#include<numeric>
+#include<algorithm>
+using namespace std;
+
+void print(int val)
+{
+	cout << val << " ";
+}
+
+void test01()
+{
+	vector<int>v1;
+	v1.resize(10);
+
+	//后期重新填充
+	fill(v1.begin(), v1.end(), 44);
+	for_each(v1.begin(), v1.end(), print);
+	
+
+}
+
+int main()
+{
+	test01();
+	return 0;
+}
