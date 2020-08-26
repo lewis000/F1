@@ -82,9 +82,9 @@ void test01()
 	//最特殊的情况，两个容器没有交集，开辟空间是两个容器size之和
 	vt.resize(v1.size() + v2.size());    
 
-	//获取并集
-	//set_intersection是针对有序序列的算法，两个容器数据顺序必须是升序
-	//set_intersection返回的是结束迭代器
+	//获取交集
+	//set_union是针对有序序列的算法，两个容器数据顺序必须是升序
+	//set_union返回的是结束迭代器
 	vector<int>::iterator itend = set_union(v1.begin(), v1.end(), v2.begin(), v2.end(), vt.begin());
 	for_each(vt.begin(), itend, print);     //注意此两行
 	cout << endl;
@@ -104,5 +104,65 @@ int main()
 
 **************************************************************************************************************************
 
-3、set_-->容器求差集
+3、set_difference-->容器求差集
 
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+void print(int val)
+{
+	cout << val << " ";
+}
+
+void test01()
+{
+	vector<int>v1;
+	vector<int>v2;
+	vector<int>vt;
+	v1.push_back(3);
+	v1.push_back(11);
+	v1.push_back(13);
+	v1.push_back(33);
+	v1.push_back(44);
+
+	for (int i = 3; i < 14; i++)
+	{
+		v2.push_back(i);
+	}
+
+	//目标容器需要提前开辟空间
+	//最特殊的情况，两个容器没有交集，开辟空间取大容器size
+	vt.resize(max(v1.size(), v2.size()));
+
+	//获取差集
+	//set_difference是针对有序序列的算法，两个容器数据顺序必须是升序
+	//set_difference返回的是结束迭代器
+	vector<int>::iterator itend = set_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), vt.begin());
+
+	cout << "v1和v2的差集：" << endl;
+	for_each(vt.begin(), itend, print);     //注意此两行
+	cout << endl;
+	for_each(vt.begin(), vt.end(), print);  //输出结果的区别
+	cout << endl;
+
+
+	vector<int>::iterator itend1 = set_difference(v2.begin(), v2.end(), v1.begin(), v1.end(), vt.begin());
+
+	cout << "v2和v1的差集：" << endl;
+	for_each(vt.begin(), itend1, print);     //注意此两行
+	cout << endl;
+	for_each(vt.begin(), vt.end(), print);  //输出结果的区别
+	cout << endl;
+	
+	for_each(v1.begin(), v1.end(), print);
+	cout << endl;
+	for_each(v2.begin(), v2.end(), print);
+}
+
+int main()
+{
+	test01();
+	return 0;
+}
