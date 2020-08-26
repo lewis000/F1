@@ -1,0 +1,61 @@
+1、accumulate
+
+#include<iostream>
+#include<vector>
+#include<numeric>
+#include<algorithm>
+using namespace std;
+
+void print(int val)
+{
+	cout << val << " ";
+}
+
+class Greater0
+{
+public:
+	bool operator()(int val)
+	{
+		return val < 3;
+	}
+};
+
+void test01()
+{
+	vector<int>v1;
+	vector<int>v2;
+	v1.push_back(13);
+	v1.push_back(11);
+	v1.push_back(44);
+	v1.push_back(0);
+	v1.push_back(33);
+	v1.push_back(3);
+	v1.push_back(0);
+
+	for (int i = 0; i < 10; i++)
+	{
+		v2.push_back(i);
+	}
+	
+	for_each(v2.begin(), v2.end(), print);
+	cout << endl;
+	//参数3（即0）是起始累加值
+	int total = accumulate(v1.begin(), v1.end(), 0);
+	int total1 = accumulate(v1.begin(), v1.end(), 10);
+	cout << "total = " << total << endl;
+	cout << "total1 = " << total1 << endl;
+
+	int num = accumulate(v2.begin(), v2.end(), 0);
+	cout << "num = " << num << endl;
+
+}
+
+int main()
+{
+	test01();
+	return 0;
+}
+
+***************************************************************************************************************
+
+2、
