@@ -1,0 +1,1371 @@
+1、computerRoom.h
+
+#pragma once
+#include<iostream>
+
+using namespace std;
+
+class ComputerRoom
+{
+public:
+
+	int m_comid;   //机房id号
+	int m_maxnum;   //机房最大容量
+};
+
+************************************************************************************************************************************************************
+
+2、globalFile.h
+
+#pragma once
+
+
+//管理员文件
+#define ADMIN_FILE    "admin.txt"
+//学生文件
+#define STUDENT_FILE  "student.txt"
+//教师文件
+#define TEACHER_FILE  "teacher.txt"
+//机房信息文件
+#define COMPUTER_FILE "computerRoom.txt"
+//订单文件
+#define ORDER_FILE    "order.txt"
+
+**************************************************************************************************************************************************************
+
+3、Identity.h
+
+#pragma once
+#include<iostream>
+#include<string>
+using namespace std;
+
+//身份抽象基类
+class Identity
+{
+public:
+	//操作菜单   纯虚函数
+	virtual void openMenu() = 0;
+
+	//用户名
+	string m_name;
+	//密码
+	string m_pwd;
+};
+
+**************************************************************************************************************************************************************
+
+4、manager.h
+
+#pragma once
+#include<iostream>
+using namespace std;
+#include"Identity.h"
+#include<string>
+#include<fstream>
+#include"globaFile.h"
+#include<vector>
+#include"student.h"
+#include"teacher.h"
+#include<algorithm>
+#include"computerRoom.h"
+
+class Manager :public Identity
+{
+public:
+	//默认构造
+	Manager();
+
+	//有参构造
+	Manager(string name, string pwd);
+
+	//菜单界面
+	virtual void openMenu();
+
+	//添加账号
+	void addPerson();
+
+	//查看账号
+	void showPerson();
+
+	//查开机房信息
+	void showComputer();
+
+	//清空预约记录
+	void clearFile();
+	
+	//初始化容器
+	void initVector();
+
+	//检测重复   参数1是检测学号/职工号   参数2是检测类型
+	bool checkRepeat(int id, int type);
+
+	//学生容器
+	vector<Student>vStu;
+
+	//老师容器
+	vector<Teacher>vTea;
+
+	//机房信息容器
+	vector<ComputerRoom>vCom;
+
+};
+
+****************************************************************************************************************************************************************
+
+5、orderFile.h
+
+#pragma once
+#include<iostream>
+#include"globaFile.h"
+#include<fstream>
+#include<map>
+#include<string>
+using namespace std;
+
+class OrderFile
+{
+public:
+	//构造函数
+	OrderFile();
+	
+	//更新预约记录
+	void updateOrder();
+
+	//记录预约条数
+	int m_Size;
+
+	//记录所有预约信息的容器    key记录条数   value   具体记录键值对信息
+	map<int, map<string, string>>m_orderData;
+};
+
+
+*************************************************************************************************************************************************************
+
+6、student.h
+
+#pragma once
+#include<iostream>
+#include"Identity.h"
+#include<string>
+#include<vector>
+#include"computerRoom.h"
+#include<fstream>
+#include"globaFile.h"
+#include"orderFile.h"
+using namespace std;
+
+//学生类
+class Student :public Identity
+{
+public:
+	//默认构造
+	Student();
+
+	//有参构造
+	Student(int id, string name, string pwd);
+
+	//菜单界面
+	virtual void openMenu();
+
+	//申请预约
+	void applyOrder();
+
+	//查开自身预约
+	void showMyOrder();
+
+	//查看所有预约
+	void showAllOrder();
+
+	//取消预约
+	void cancalOrder();
+
+	//学生属性
+	int m_id;
+
+	//机房属性
+	vector<ComputerRoom>vCom;
+};
+
+******************************************************************************************************************************************************************
+
+7、teacher.h
+
+#pragma once
+#include<iostream>
+using namespace std;
+#include"Identity.h"
+#include<string>
+#include"orderFile.h"
+#include<vector>
+
+//教师类设计
+class Teacher :public Identity
+{
+public:
+	//默认构造
+	Teacher();
+	//有参构造
+	Teacher(int empId, string name, string pwd);
+	
+	//菜单界面
+	virtual void openMenu();
+
+	//查看所有预约
+	void showAllOrder();
+	//审核预约
+	void validOrder();
+	//职工号
+	int m_empid;
+};
+
+*************************************************************************************************************************************************
+
+8、manager.cpp
+
+#include"manager.h"
+
+//默认构造
+Manager::Manager()
+{
+
+}
+
+//有参构造
+Manager::Manager(string name, string pwd)
+{
+	//初始化管理员信息
+	this->m_name = name;
+	this->m_pwd = pwd;
+
+	//初始化容器   获取到文件中所有 学生、老师信息
+	this->initVector();
+
+	//初始化机房信息
+	ifstream ifs;
+	ifs.open(COMPUTER_FILE, ios::in);    //读信息
+
+	ComputerRoom com;
+	while (ifs >> com.m_comid && ifs >> com.m_maxnum)
+	{
+		vCom.push_back(com);      //将读取的信息插入容器中
+	}
+	ifs.close();
+	cout << "机房的数量：" << vCom.size() << endl;
+
+}
+
+//菜单界面
+void Manager::openMenu()
+{
+	cout << "欢迎管理员" << this->m_name << "登录" << endl;
+	cout << endl << "请输入您的身份" << endl;
+	cout << "\t\t-----------------------------------\n";
+	cout << "\t\t|                                |\n";
+	cout << "\t\t|        1、添加账号             |\n";
+	cout << "\t\t|                                |\n";
+	cout << "\t\t|        2、查看账号             |\n";
+	cout << "\t\t|                                |\n";
+	cout << "\t\t|        3、查看机房             |\n";
+	cout << "\t\t|                                |\n";
+	cout << "\t\t|        4、清空预约             |\n";
+	cout << "\t\t|                                |\n";
+	cout << "\t\t|        0、注销登录             |\n";
+	cout << "\t\t|                                |\n";
+	cout << "\t\t-----------------------------------\n";
+	cout << "输入你的选择：";
+}
+
+//添加账号
+void Manager::addPerson()
+{
+	cout << "请选择添加的类型" << endl;
+	cout << "1、添加学生" << endl;
+	cout << "2、添加老师" << endl;
+
+	string filename;    //操作文件名
+	string tip;    //提示id号
+	string errorTip;  //重复错误提示
+
+	ofstream ofs;
+	int select = 0;
+	cin >> select;    //接收用户选择
+	if (select == 1)
+	{
+		//添加的是学生
+		filename = STUDENT_FILE;
+		tip = "请输入学号:";
+		errorTip = "学号重复，请重新输入";
+	}
+	else
+	{
+		//添加的是老师
+		filename = TEACHER_FILE;
+		tip = "请输入职工编号";
+		errorTip = "职工号重复，请重新输入";
+	}
+
+
+	ofs.open(filename, ios::out | ios::app);   //利用追加的方式写文件
+	int id;   //学号/职工号
+	string name;   //姓名
+	string pwd;    //密码
+
+	cout << tip;
+	while (true)
+	{
+		cin >> id;
+		bool ret = checkRepeat(id, select);
+		if (ret)     //有重复
+		{
+			cout << errorTip << endl;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	
+	//cout << tip;    //上移至while循环上方
+	//cin >> id;      //上移至while循环里
+	cout << "请输入姓名:";
+	cin >> name;
+	cout << "请输入密码:";
+	cin >> pwd;
+
+	//向文件中添加数据
+	ofs << id << " " << name << " " << pwd << " " << endl;
+	cout << "添加成功" << endl;
+
+	system("pause");
+	system("cls");
+
+	ofs.close();
+
+	//调用初始化容器接口，重新获取文件中的数据
+	this->initVector();
+}
+
+void printStudent(Student& s)
+{
+	cout << "学号：" << s.m_id << " 姓名：" << s.m_name << " 密码：" << s.m_pwd << endl;
+}
+
+void printTeacher(Teacher& t)
+{
+	cout << "职工编号：" << t.m_empid << " 姓名：" << t.m_name << " 密码：" << t.m_pwd << endl;
+}
+
+//查看账号
+void Manager::showPerson()
+{
+	cout << "请输入查看的内容" << endl;
+	cout << "1、查看所有学生信息" << endl;
+	cout << "2、查看所有老师信息" << endl;
+
+	int select = 0;   //接收用户选择
+	cin >> select;
+
+	if (select == 1)
+	{
+		cout << "所有学生信息如下：" << endl;
+		for_each(vStu.begin(), vStu.end(), printStudent);
+	}
+	else
+	{
+		cout << "所有老师信息如下：" << endl;
+		for_each(vTea.begin(), vTea.end(), printTeacher);
+	}
+
+	system("pause");
+	system("cls");
+}
+
+//查开机房信息
+void Manager::showComputer()
+{
+	cout << "机房信息如下：" << endl;
+	for (vector<ComputerRoom>::iterator it = vCom.begin(); it != vCom.end(); it++)
+	{
+		cout << "机房号码：" << it->m_comid << " 机房最大容量：" << (*it).m_maxnum << endl;
+	}
+
+	system("pause");
+	system("cls");
+}
+
+//清空预约记录
+void Manager::clearFile()
+{
+	ofstream ofs;
+	ofs.open(ORDER_FILE, ios::trunc);
+	ofs.close();
+
+	cout << "清除成功" << endl;
+	system("pause");
+	system("cls");
+
+}
+
+//初始化容器
+void Manager::initVector()
+{
+	//确保容器是清空状态
+	vStu.clear();
+	vTea.clear();
+	
+	//读取信息  学生
+	ifstream ifs;
+	ifs.open(STUDENT_FILE, ios::in);
+
+	if (!ifs.is_open())
+	{
+		cout << "文件读取失败" << endl;
+		return;
+	}
+
+	Student s;
+	while (ifs >> s.m_id && ifs >> s.m_name && ifs >> s.m_pwd)
+	{
+		vStu.push_back(s);
+	}
+
+	cout << "学生数量：" << vStu.size() << endl;   //测试代码
+	ifs.close();
+
+
+	//读取信息   老师
+	ifs.open(TEACHER_FILE, ios::in);
+	if (!ifs.is_open())
+	{
+		cout << "文件读取失败" << endl;
+		return;
+	}
+	Teacher t;
+	while (ifs >> t.m_empid && ifs >> t.m_name && ifs >> t.m_pwd)
+	{
+		vTea.push_back(t);
+	}
+
+	cout << "老师数量：" << vTea.size() << endl;   //测试代码
+	ifs.close();
+}
+
+//检测重复   参数1是检测学号/职工号   参数2是检测类型
+bool Manager::checkRepeat(int id, int type)
+{
+	if (type == 1)
+	{
+		//检测学生
+		for (vector<Student>::iterator it = vStu.begin(); it != vStu.end(); it++)
+		{
+			if (id == it->m_id)
+			{
+				return true;
+			}
+		}
+	}
+	else
+	{
+		//检测老师
+		for (vector<Teacher>::iterator it = vTea.begin(); it != vTea.end(); it++)
+		{
+			if (id == it->m_empid)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+
+*****************************************************************************************************************************************************************
+9、orderFile.cpp
+
+#include"orderFile.h"
+
+//构造函数
+OrderFile::OrderFile()
+{
+	ifstream ifs;
+	ifs.open(ORDER_FILE, ios::in);
+
+	string date;    //日期
+	string interval;   //时间段
+	string stuId;    //学生编号
+	string stuName;   //学生姓名
+	string roomId;    //机房编号
+	string status;    //预约状态
+
+	this->m_Size = 0;   //记录条数
+
+	while (ifs >> date && ifs >> interval && ifs 
+		>> stuId && ifs >> stuName && ifs >> roomId && ifs >> status)
+	{
+		//测试代码
+		/*cout << date << endl;
+		cout << interval << endl;
+		cout << stuId << endl;
+		cout << stuName << endl;
+		cout << roomId << endl;
+		cout << status << endl;
+		cout << endl;*/
+
+		//以date:1为例
+		string key;
+		string value;
+		map<string, string>m;
+		int pos = date.find(":");   //先找到：的位置
+		if (pos != -1)
+		{
+			key = date.substr(0, pos);
+			value = date.substr(pos + 1, date.size() - pos - 1);    //value的个数=(:位置+1，总的大小-：位置-1)
+
+			m.insert(make_pair(key, value));
+		}
+		
+		pos = interval.find(":");   //先找到：的位置
+		if (pos != -1)
+		{
+			key = interval.substr(0, pos);
+			value = interval.substr(pos + 1, interval.size() - pos - 1);    //value的个数=(:位置+1，总的大小-：位置-1)
+
+			m.insert(make_pair(key, value));
+		}
+
+		pos = stuId.find(":");   //先找到：的位置
+		if (pos != -1)
+		{
+			key = stuId.substr(0, pos);
+			value = stuId.substr(pos + 1, stuId.size() - pos - 1);    //value的个数=(:位置+1，总的大小-：位置-1)
+
+			m.insert(make_pair(key, value));
+		}
+
+		pos = stuName.find(":");   //先找到：的位置
+		if (pos != -1)
+		{
+			key = stuName.substr(0, pos);
+			value = stuName.substr(pos + 1, stuName.size() - pos - 1);    //value的个数=(:位置+1，总的大小-：位置-1)
+
+			m.insert(make_pair(key, value));
+		}
+
+		pos = roomId.find(":");   //先找到：的位置
+		if (pos != -1)
+		{
+			key = roomId.substr(0, pos);
+			value = roomId.substr(pos + 1, roomId.size() - pos - 1);    //value的个数=(:位置+1，总的大小-：位置-1)
+
+			m.insert(make_pair(key, value));
+		}
+
+		pos = status.find(":");   //先找到：的位置
+		if (pos != -1)
+		{
+			key = status.substr(0, pos);
+			value = status.substr(pos + 1, status.size() - pos - 1);    //value的个数=(:位置+1，总的大小-：位置-1)
+
+			m.insert(make_pair(key, value));
+		}
+
+		//将小map容器放到大map容器之中
+		this->m_orderData.insert(make_pair(this->m_Size, m));
+		this->m_Size++;
+	}
+
+	ifs.close();
+
+	//测试最大的map容器
+	/*for (map<int, map<string, string>>::iterator it = m_orderData.begin(); it != m_orderData.end(); it++)
+	{
+		cout << "条数为" << it->first << " value = " << endl;
+		for (map<string, string>::iterator mit = (*it).second.begin(); mit != it->second.end(); mit++)
+		{
+			cout << "key = " << mit->first << " value = " << mit->second << " ";
+		}
+		cout << endl;
+	}*/
+}
+
+//更新预约记录
+void OrderFile::updateOrder()
+{
+	if (this->m_Size == 0)
+	{
+		return;   //预约记录为0时，直接return
+	}
+
+	ofstream ofs(ORDER_FILE, ios::out | ios::trunc);
+	for (int i = 0; i < this->m_Size; i++)
+	{
+		ofs << "date:" << this->m_orderData[i]["date"] << " ";
+		ofs << "interval:" << this->m_orderData[i]["interval"] << " ";
+		ofs << "stuId:" << this->m_orderData[i]["stuId"] << " ";
+		ofs << "stuName:" << this->m_orderData[i]["stuName"] << " ";
+		ofs << "roomId:" << this->m_orderData[i]["roomId"] << " ";
+		ofs << "status:" << this->m_orderData[i]["status"] << endl;
+	}
+
+	ofs.close();
+}
+
+****************************************************************************************************************************************************************
+
+10、student.cpp
+
+/********************************
+1、先写空实现
+2、慢慢加入功能
+*********************************/
+
+
+#include"student.h"
+
+//默认构造
+Student::Student()
+{
+
+}
+
+//有参构造
+Student::Student(int id, string name, string pwd)
+{
+	//初始化属性
+	this->m_id = id;
+	this->m_name = name;
+	this->m_pwd = pwd;
+
+	//初始化机房信息
+	ifstream ifs;
+	ifs.open(COMPUTER_FILE, ios::in);
+
+	ComputerRoom com;
+	while (ifs >> com.m_comid && ifs >> com.m_maxnum)
+	{
+		//将读取的信息放入到容器中
+		vCom.push_back(com);
+	}
+	ifs.close();
+
+}
+
+//菜单界面
+void Student::openMenu()
+{
+	cout << "欢迎学生" << this->m_name << "登录" << endl;
+	cout << endl << "请输入您的身份" << endl;
+	cout << "\t\t---------------------------------------\n";
+	cout << "\t\t|                                      |\n";
+	cout << "\t\t|        1、申  请  预  约             |\n";
+	cout << "\t\t|                                      |\n";
+	cout << "\t\t|        2、查看 自身 预约             |\n";
+	cout << "\t\t|                                      |\n";
+	cout << "\t\t|        3、查看所有人预约             |\n";
+	cout << "\t\t|                                      |\n";
+	cout << "\t\t|        4、取  消  预  约             |\n";
+	cout << "\t\t|                                      |\n";
+	cout << "\t\t|        0、注  销  登  录             |\n";
+	cout << "\t\t|                                      |\n";
+	cout << "\t\t---------------------------------------\n";
+	cout << "输入你的选择：";
+}
+
+//申请预约
+void Student::applyOrder()
+{
+	cout << "机房开放时间为周一至周五" << endl;
+	cout << "请输入预约的时间：";
+	cout << "1、周一" << " 2、周二" << " 3、周三" << " 4、周四" << " 5、周五" << endl;
+
+	int date = 0;    //日期
+	int interval = 0;   //时间段
+	int room = 0;   //机房编号
+
+	while (true)
+	{
+		cin >> date;
+		if (date >= 1 && date <= 5)
+		{
+			break;
+		}
+		cout << "输入有误，请重新输入" << endl;
+	}
+
+	cout << "请输入预约的时间段：";
+	cout << "1、上午" << " 2、下午" << endl;
+
+	while (true)
+	{
+		cin >> interval;
+		if (interval >= 1 && interval <= 2)
+		{
+			break;
+		}
+		cout << "输入有误，请重新输入" << endl;
+	}
+
+	cout << "请选择机房：" << endl;
+	for (unsigned int i = 0; i < vCom.size(); i++)
+	{
+		cout << vCom[i].m_comid << "号机房的最大容量为：" << vCom[i].m_maxnum << endl;
+	}
+	
+	while (true)
+	{
+		cin >> room;
+		if (room >= 1 && room <= 3)
+		{
+			break;
+		}
+		cout << "输入有误，请重新输入" << endl;
+	}
+
+	cout << "预约成功！审核中......" << endl;
+
+	ofstream ofs;
+	ofs.open(ORDER_FILE, ios::app);
+
+	ofs << "date:" << date << " ";
+	ofs << "interval:" << interval << " ";
+	ofs << "stuId:" << this->m_id << " ";
+	ofs << "stuName:" << this->m_name << " ";
+	ofs << "roomId:" << room << " ";
+	ofs << "status:" << 1 << endl;
+
+	ofs.close();
+
+	system("pause");
+	system("cls");
+}
+
+//查开自身预约
+void Student::showMyOrder()
+{
+	OrderFile of;
+
+	if (of.m_Size == 0)
+	{
+		cout << "无预约记录" << endl;
+		system("pause");
+		system("cls");
+		return;
+	}
+
+	for (int i = 0; i < of.m_Size; i++)
+	{
+		//string 转 int   1、string利用.c_str()转成const char*   2、利用atoi(const char*) 转 int
+		if (this->m_id == atoi(of.m_orderData[i]["stuId"].c_str()))   //找到自身预约
+		{
+			cout << "预约日期：周" << of.m_orderData[i]["date"];
+			cout << "时间段：" << (of.m_orderData[i]["interval"] == "1" ? "上午" : "下午");
+			cout << "机房编号：" << of.m_orderData[i]["roomId"];
+
+			string status = "状态：";   //机房状态   1、审核中   2、预约成功   -1、预约失败  0、取消预约
+			if (of.m_orderData[i]["status"] == "1")
+			{
+				status += "审核中......";
+			}
+			else if (of.m_orderData[i]["status"] == "2")
+			{
+				status += "预约成功";
+			}
+			else if (of.m_orderData[i]["status"] == "-1")
+			{
+				status += "预约失败";
+			}
+			else
+			{
+				status += "取消预约";
+			}
+			cout << status << endl;
+		}
+	}
+
+	system("pause");
+	system("cls");
+}
+
+//查看所有预约
+void Student::showAllOrder()
+{
+	OrderFile of;
+	if (of.m_Size == 0)
+	{
+		cout << "无预约记录" << endl;
+		system("pause");
+		system("cls");
+		return;
+	}
+
+	for (int i = 0; i < of.m_Size; i++)
+	{
+		cout << i + 1 << "、";
+		cout << "预约日期：周" << of.m_orderData[i]["date"];
+		cout << "时间段：" << (of.m_orderData[i]["interval"] == "1" ? "上午" : "下午");
+		cout << "学生编号：" << of.m_orderData[i]["stuId"];
+		cout << "学生姓名：" << of.m_orderData[i]["stuName"];
+		cout << "机房编号：" << of.m_orderData[i]["roomId"];
+		string status = "状态：";   //机房状态   1、审核中   2、预约成功   -1、预约失败  0、取消预约
+		if (of.m_orderData[i]["status"] == "1")
+		{
+			status += "审核中......";
+		}
+		else if (of.m_orderData[i]["status"] == "2")
+		{
+			status += "预约成功";
+		}
+		else if (of.m_orderData[i]["status"] == "-1")
+		{
+			status += "预约失败";
+		}
+		else
+		{
+			status += "取消预约";
+		}
+		cout << status << endl;
+	}
+	system("pause");
+	system("cls");
+}
+
+//取消预约
+void Student::cancalOrder()
+{
+	OrderFile of;
+	if (of.m_Size == 0)
+	{
+		cout << "无预约记录" << endl;
+		system("pause");
+		system("cls");
+		return;
+	}
+
+	cout << "审核中或者已预约成功的可以取消预约,请输入取消预约" << endl;
+
+	int index = 1;
+	vector<int>v;    //存放再最大容器中的下标编号
+	for (int i = 0; i < of.m_Size; i++)
+	{
+		//先判断是自身的学号
+		if (this->m_id == atoi(of.m_orderData[i]["stuId"].c_str()))
+		{
+			//再筛选状态   预约成功或审核中的可以取消
+			if (of.m_orderData[i]["status"] == "1" || of.m_orderData[i]["status"] == "2")
+			{
+				v.push_back(i);
+				cout << index++ << "、";
+				cout << "预约时间，周" << of.m_orderData[i]["date"];
+				cout << "时间段：" << (of.m_orderData[i]["interval"] == "1" ? "上午" : "下午");
+				cout << "机房编号：" << of.m_orderData[i]["roomId"];
+				string status = "状态：";
+				if (of.m_orderData[i]["status"] == "1")
+				{
+					status += "审核中......";
+				}
+				else if (of.m_orderData[i]["status"] == "2")
+				{
+					status += "预约成功";
+				}
+				cout << status << endl;
+			}
+		}
+	}
+
+	cout << "请输入取消的记录，0代表返回" << endl;
+	unsigned int select = 0;
+
+	while (true)
+	{
+		cin >> select;
+		if (select >= 0 && select <= v.size())
+		{
+			if (select == 0)
+			{
+				break;
+			}
+			else
+			{
+				of.m_orderData[v[select - 1]]["status"] == "0";
+
+				of.updateOrder();
+
+				cout << "已取消成功" << endl;
+				break;
+			}
+		}
+
+		cout << "输入有误，请重新输入" << endl;
+	}
+
+	system("pause");
+	system("cls");
+}
+
+*******************************************************************************************************************************************************************
+
+11、teacher.cpp
+
+#include"teacher.h"
+
+//默认构造
+Teacher::Teacher()
+{
+
+}
+//有参构造
+Teacher::Teacher(int empId, string name, string pwd)
+{
+	//初始化属性
+	this->m_empid = empId;
+	this->m_name = name;
+	this->m_pwd = pwd;
+}
+
+//菜单界面
+void Teacher::openMenu()
+{
+	cout << "欢迎老师" << this->m_name << "登录" << endl;
+	cout << endl << "请输入您的身份" << endl;
+	cout << "\t\t---------------------------------------\n";
+	cout << "\t\t|                                      |\n";
+	cout << "\t\t|        1、查看所有人预约             |\n";
+	cout << "\t\t|                                      |\n";
+	cout << "\t\t|        2、审  核  预  约             |\n";
+	cout << "\t\t|                                      |\n";
+	cout << "\t\t|        0、注  销  登  录             |\n";
+	cout << "\t\t|                                      |\n";
+	cout << "\t\t---------------------------------------\n";
+	cout << "输入你的选择：";
+}
+
+//查看所有预约
+void Teacher::showAllOrder()
+{
+	OrderFile of;
+	if (of.m_Size == 0)
+	{
+		cout << "无预约记录" << endl;
+		system("pause");
+		system("cls");
+		return;
+	}
+
+	for (int i = 0; i < of.m_Size; i++)
+	{
+		cout << i + 1 << "、";
+		cout << "预约日期：周" << of.m_orderData[i]["date"];
+		cout << "时间段：" << (of.m_orderData[i]["interval"] == "1" ? "上午" : "下午");
+		cout << "学号：" << of.m_orderData[i]["stuId"];
+		cout << "学生姓名：" << of.m_orderData[i]["stuName"];
+		cout << "机房编号：" << of.m_orderData[i]["roomId"];
+
+		string status = "状态：";
+		if (of.m_orderData[i]["status"] == "1")
+		{
+			status += "审核中......";
+		}
+		else if (of.m_orderData[i]["status"] == "2")
+		{
+			status += "已预约";
+		}
+		else if (of.m_orderData[i]["status"] == "-1")
+		{
+			status += "预约失败";
+		}
+		else
+		{
+			status += "取消预约";
+		}
+		cout << status << endl;
+	}
+
+	system("pause");
+	system("cls");
+
+}
+//审核预约
+void Teacher::validOrder()
+{
+	OrderFile of;
+	if (of.m_Size == 0)
+	{
+		cout << "无预约记录" << endl;
+		system("pause");
+		system("cls");
+		return;
+	}
+	vector<int>v;
+	int index = 0;
+	cout << "待审核的预约记录如下：" << endl;
+
+	for (int i = 0; i < of.m_Size; i++)
+	{
+		if (of.m_orderData[i]["status"] == "1")
+		{
+			v.push_back(i);
+			cout << ++index << "、";
+			cout << "预约日期：周" << of.m_orderData[i]["date"];
+			cout << "时间段：" << (of.m_orderData[i]["interval"] == "1" ? "上午" : "下午");
+			cout << "学号：" << of.m_orderData[i]["stuId"];
+			cout << "学生姓名：" << of.m_orderData[i]["stuName"];
+			cout << "机房编号：" << of.m_orderData[i]["roomId"];
+			cout << "状态：审核中......" << endl;
+		}
+	}
+
+	cout << "请输入审核的预约记录，0代表返回" << endl;
+	unsigned int select = 0;   //接收用户选择的预约记录
+	int ret = 0;    //接受预约记录结果
+
+	while (true)
+	{
+		cin >> select;
+		if (select >= 0 || select <= v.size())
+		{
+			if (select == 0)
+			{
+				break;
+			}
+			else
+			{
+				cout << "请输入审核结果：1、通过    2、不通过" << endl;
+				cin >> ret;
+				if (ret == 1)
+				{
+					//通过
+					of.m_orderData[v[select - 1]]["status"] = "2";
+				}
+				else
+				{
+					//不通过
+					of.m_orderData[v[select - 1]]["status"] = "-1";
+				}
+
+				of.updateOrder();  //更新预约记录
+				cout << "审核完毕" << endl;
+				break;
+			}
+		}
+		cout << "输入有误，请重新输入" << endl;
+	}
+	system("puase");
+	system("cls");
+
+}
+
+*************************************************************************************************************************************************************************
+
+12、机房预约系统.cpp
+
+#include<iostream>
+using namespace std;
+#include"Identity.h"
+#include<fstream>
+#include<string>
+#include"globaFile.h"
+#include"student.h"
+#include"teacher.h"
+#include"manager.h"
+
+//进入学生子菜单界面
+void studentMeun(Identity*& student)
+{
+	while (true)
+	{
+		//调用学生子菜单
+		student->openMenu();     //多态调用
+
+		Student* stu = (Student*)student;    //强转为子类指针
+
+		int select = 0;    //用于接收用户选择
+		cin >> select;
+
+		if (select == 1)   //申请预约
+		{
+			stu->applyOrder();
+		}
+		else if (select == 2)   //查看自身预约
+		{
+			stu->showMyOrder();
+		}
+		else if (select == 3)    //查看所有人预约
+		{
+			stu->showAllOrder();
+		}
+		else if (select == 4)   //取消预约
+		{
+			stu->cancalOrder();
+		}
+		else  //注销登录
+		{
+			delete student;
+			cout << "注销成功" << endl;
+
+			system("pause");
+			system("cls");
+			return;     //缺少return会报错
+		}
+	}
+}
+
+//进入老师子菜单页面
+void teacherMenu(Identity*& teacher)
+{
+	while (true)
+	{
+		//调用子菜单页面
+		teacher->openMenu();
+
+		Teacher* tea = (Teacher*)teacher;
+
+		int select = 0;  //用来接收用户选择
+		cin >> select;
+		if (select == 1)   //查看所有预约
+		{
+			tea->showAllOrder();
+		}
+		else if (select == 2)   //审核预约
+		{
+			tea->validOrder();
+		}
+		else   //注销登录
+		{
+			delete teacher;
+			cout << "注销成功" << endl;
+			system("pause");
+			system("cls");
+			return;
+		}
+	}
+}
+
+//进入管理员子菜单页面
+void managerMeun(Identity*& manager)
+{
+	while (true)
+	{
+		//调用管理员子菜单
+		manager->openMenu();   //多态
+
+		// 将父类指针转为子类指针，调用子类里的其他接口
+		Manager* man = (Manager*)manager;
+
+		int select = 0;   //接收用户选择
+		cin >> select;
+
+		if (select == 1)   //添加账号
+		{
+			cout << "添加账号" << endl;
+			man->addPerson();
+		}
+		else if (select == 2)   //查看账号
+		{
+			cout << "查看账号" << endl;
+			man->showPerson();
+		}
+		else if (select == 3)   //查看机房
+		{
+			cout << "查看机房" << endl;
+			man->showComputer();
+		}
+		else if (select == 4)   //清空预约
+		{
+			cout << "清空预约" << endl;
+			man->clearFile();
+		}
+		else   //默认退出程序
+		{
+			delete manager;   //销毁堆区对象
+			cout << "注销成功" << endl;
+			system("pause");
+			system("cls");
+			return;
+
+		}
+
+
+	}
+	
+
+}
+
+//登录功能  参数1操作文件名   参数2 操作身份类型
+void LoginIn(string filename, int type)
+{
+	//父类指针，用于指向子类对象
+	Identity* person = NULL;
+
+	//读文件
+	ifstream ifs;
+	ifs.open(filename, ios::in);
+
+	//判断文件是否存在
+	if (!ifs.is_open())
+	{
+		cout << "文件不存在" << endl;
+		ifs.close();
+		return;
+	}
+
+	//准备接受用户的信息
+	int id = 0;
+	string name;
+	string pwd;
+
+	//判断身份
+	if (type == 1)  //学生身份
+	{
+		cout << "请输入学号：";
+		cin >> id;
+	}
+	else if (type == 2)    //老师身份
+	{
+		cout << "请输入职工号：";
+		cin >> id;
+	}
+
+	cout << "请输入用户名：";
+	cin >> name;
+
+	cout << "请输入密码：";
+	cin >> pwd;
+
+	if (type == 1)
+	{
+		//学生身份验证
+		int fId;   //从文件中读取的id号
+		string fname;   //从文件中读取的姓名
+		string fpwd;    //从文件中读取的密码
+		while (ifs >> fId && ifs >> fname && ifs >> fpwd)
+		{
+			if (fId == id && fname == name && fpwd == pwd)
+			{
+				cout << "学生验证登录成功" << endl;
+				system("pause");
+				system("cls");
+				person = new Student(id, name, pwd);
+				//进入学生身份子菜单
+				studentMeun(person);
+
+				return;
+			}
+		}
+	}
+	else if(type == 2)
+	{
+		//老师身份验证
+		int fId;
+		string fname;
+		string fpwd;
+		while (ifs >> fId && ifs >> fname && ifs >> fpwd)
+		{
+			if (fId == id && fname == name && fpwd == pwd)
+			{
+				cout << "教师验证登录成功" << endl;
+				system("pause");
+				system("cls");
+				person = new Teacher(id, name, pwd);
+				//进入老师身份子菜单
+				teacherMenu(person);
+
+				return;
+			}
+		}
+
+	}
+	else if (type == 3)
+	{
+		//管理员身份验证
+		string fname;
+		string fpwd;
+		while (ifs >> fname && ifs >> fpwd)
+		{
+			if (fname == name && fpwd == pwd)
+			{
+				cout << "管理员验证登录成功" << endl;
+				system("pause");
+				system("cls");
+				person = new Manager(name, pwd);
+				//进入管理员身份子菜单
+				managerMeun(person);
+
+				return;
+			}
+		}
+
+	}
+
+	cout << "登陆失败！" << endl;
+	system("pause");
+	system("cls");
+}
+
+int main()
+{
+	int select = 0;     //用于接收用户选择
+
+	while (true)
+	{
+		cout << "============================欢迎来到机房预约系统============================" << endl;
+		cout << endl << "请输入您的身份" << endl;
+		cout << "\t\t-----------------------------------\n";
+		cout << "\t\t|                                 |\n";
+		cout << "\t\t|        1、学    生              |\n";
+		cout << "\t\t|                                 |\n";
+		cout << "\t\t|        2、老    师              |\n";
+		cout << "\t\t|                                 |\n";
+		cout << "\t\t|        3、管 理 员              |\n";
+		cout << "\t\t|                                 |\n";
+		cout << "\t\t|        0、退 出 系 统           |\n";
+		cout << "\t\t|                                 |\n";
+		cout << "\t\t-----------------------------------\n";
+		cout << "输入你的选择：";
+		
+		cin >> select;   //接受用户选择
+
+		switch (select)
+		{
+		case 1:   //学生身份
+			LoginIn(STUDENT_FILE, 1);
+			break;
+		case 2:   //老师身份
+			LoginIn(TEACHER_FILE, 2);
+			break;
+		case 3:    //管理员身份
+			LoginIn(ADMIN_FILE, 3);
+			break;
+		case 0:    //退出系统
+			cout << "欢迎下次使用" << endl;
+			exit(0);
+			system("pause");
+			return 0;   //这return 0的意义跟最后一行return 0 的意义一致
+			break;
+		default:
+			cout << "输入有误，请重新输入" << endl;
+			system("pause");
+			system("cls");
+			break;
+		}
+	}
+
+	
+	system("pause");
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
