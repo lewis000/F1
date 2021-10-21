@@ -1,0 +1,15 @@
+python：
+*************************************************
+# 累加函数  ---   递归调用
+def fun(n):
+    if n == 1:
+        return 1
+    temp = fun(n - 1)
+    return temp + n
+*****************************************
+# 阶乘函数  ---   递归调用
+def fun(n):
+    if n == 1:
+        return 1
+    temp = fun(n - 1)
+    return temp * n
