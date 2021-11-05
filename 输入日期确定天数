@@ -8,9 +8,9 @@ sumday = 0
 monthday = [31,28,31,30,31,30,31,31,30,31,30,31]
 if ((year % 400 ==0) and (year % 100 == 0) and (year % 4 == 0)):  #闰年的判断方法肯定错了(year % 4 == 0 and year % 100 != 0 or year % 400 == 0)，但是改了之后还是不对
 	monthday[1] = 29
-for i in range(0,13):
-	if i < month - 1:
-		i += 1
+for i in range(0,13):    #11-14行代码可简化位以下两行# for i in range(0,month - 1):   # 必须用month-1，使用13出错
+	if i < month - 1:                             # sumday += monthday[i]
+		# i += 1    # 去掉日期对
 		sumday += monthday[i]
 sumday += day
 print(sumday)
